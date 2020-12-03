@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <Button
+            android:id="@+id/usa"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="미국"
+            android:textSize="20sp"
+            android:onClick="mOnClick"/>
+        <Button
+            android:id="@+id/japan"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="일본"
+            android:textSize="20sp"
+            android:onClick="mOnClick"/>
+        <Button
+            android:id="@+id/china"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="중국"
+            android:textSize="20sp"
+            android:onClick="mOnClick"/>
+        <Button
+            android:id="@+id/uk"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="영국"
+            android:textSize="20sp"
+            android:onClick="mOnClick"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/newstitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/newscontent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            />
+    </ScrollView>
+</LinearLayout>
