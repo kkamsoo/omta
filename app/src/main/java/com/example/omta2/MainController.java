@@ -36,28 +36,28 @@ public class MainController extends AppCompatActivity {
         nationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewsController.class);
+                Intent intent = new Intent(getApplicationContext(), NationController.class);
                 startActivity(intent);
             }
         });
         successButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewsController.class);
+                Intent intent = new Intent(getApplicationContext(), SuccessController.class);
                 startActivity(intent);
             }
         });
         scamButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewsController.class);
+                Intent intent = new Intent(getApplicationContext(), ScamController.class);
                 startActivity(intent);
             }
         });
         productButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), NewsController.class);
+                Intent intent = new Intent(getApplicationContext(), ProductController.class);
                 startActivity(intent);
             }
         });
@@ -67,7 +67,6 @@ public class MainController extends AppCompatActivity {
                 new AlertDialog.Builder(MainController.this)
                         .setTitle("Application 종료")
                         .setMessage("어플리케이션을 종료하시겠습니까?")
-                        .setNegativeButton("NO", null)
                         .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                             @Override
@@ -76,6 +75,7 @@ public class MainController extends AppCompatActivity {
                                 finish();
                             }
                         })
+                        .setNegativeButton("NO", null)
                         .setIcon(android.R.drawable.ic_dialog_alert).show();
             }
         });

@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:background="@drawable/background2">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,42 +15,34 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
+        ﻿<EditText
+            android:id="@+id/selectnation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:hint="나라 이름을 입력하세요."
+            android:textSize="25dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+        />
+
         <Button
-            android:id="@+id/usa"
+            android:id="@+id/enternation"
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:text="미국"
+            android:text="입력"
             android:textSize="20sp"
-            android:onClick="mOnClick"/>
-        <Button
-            android:id="@+id/japan"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="일본"
-            android:textSize="20sp"
-            android:onClick="mOnClick"/>
-        <Button
-            android:id="@+id/china"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="중국"
-            android:textSize="20sp"
-            android:onClick="mOnClick"/>
-        <Button
-            android:id="@+id/uk"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:text="영국"
-            android:textSize="20sp"
-            android:onClick="mOnClick"/>
+            android:onClick="enterNation"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/newstitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         />
 
     <ScrollView
@@ -60,7 +53,8 @@
             android:id="@+id/newscontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="20sp"
+            android:textColor="@color/black"
             />
     </ScrollView>
 </LinearLayout>

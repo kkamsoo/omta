@@ -1,6 +1,5 @@
 package com.example.omta2;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -19,7 +20,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 
-public class NewsController extends AppCompatActivity {
+public class SuccessController extends AppCompatActivity {
     EditText edit;
     TextView newsTitle, newsContent;
     EditText selectNation;
@@ -37,7 +38,7 @@ public class NewsController extends AppCompatActivity {
         newsTitle = (TextView)findViewById(R.id.newstitle);
         newsContent = (TextView)findViewById(R.id.newscontent);
         selectNation = (EditText)findViewById(R.id.selectnation);
-        this.myAlertBuilder = new AlertDialog.Builder(NewsController.this);
+        this.myAlertBuilder = new AlertDialog.Builder(SuccessController.this);
         this.myAlertBuilder.setTitle("알림");
     }
 
@@ -63,7 +64,7 @@ public class NewsController extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    getNews(nation);
+                    getSuccessStory(nation);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -82,9 +83,9 @@ public class NewsController extends AppCompatActivity {
         }).start();
     }
 
-    public void getNews(String nation) throws IOException {
+    public void getSuccessStory(String nation) throws IOException {
         String key ="W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
-        String queryUrl="http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey=" + key + "&type=xml&numOfRows=1&search1=" + nation;
+        String queryUrl="http://apis.data.go.kr/B410001/compSucsCaseService/compSucsCase?ServiceKey=" + key + "&type=xml&numOfRows=1&search1=" + nation;
 
         try{
             URL url= new URL(queryUrl);
@@ -106,8 +107,8 @@ public class NewsController extends AppCompatActivity {
                     case XmlPullParser.START_TAG:
                         tag = xpp.getName();
 
-                        if (titleCheck == false && tag.equals("newsTitl")) titleCheck = true;
-                        if (contentCheck == false && tag.equals("newsBdt")) contentCheck = true;
+                        if (titleCheck == false && tag.equals("titl")) titleCheck = true;
+                        if (contentCheck == false && tag.equals("bdtCntnt")) contentCheck = true;
 
                         if (titleCheck == true && tag.equals("data")) {
                             xpp.next();

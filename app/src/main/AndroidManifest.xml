@@ -21,6 +21,10 @@
         </activity>
         <activity android:name=".MainController" />
         <activity android:name=".NewsController" />
+        <activity android:name=".NationController" />
+        <activity android:name=".ProductController" />
+        <activity android:name=".ScamController" />
+        <activity android:name=".SuccessController" />
     </application>
 
 </manifest>
