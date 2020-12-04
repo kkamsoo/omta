@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="TabTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">#f5a623</item>                                <!-- 배경 -->
+
+        <item name="android:textColorPrimary">@android:color/black</item>       <!-- 탭바 선택된 텍스트 -->
+        <item name="android:textColorSecondary">@android:color/black</item>     <!-- 탭바 텍스트 -->
+        <item name="android:textSize">15dp</item>
+        <item name="colorAccent">@android:color/white</item>                    <!-- 하단 움직이는 바 색-->
+    </style>
 </resources>

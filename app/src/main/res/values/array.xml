@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="nations">
+        <item>미국</item>
+        <item>중국</item>
+        <item>일본</item>
+    </string-array>
+</resources>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +34,10 @@ public class SuccessController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_form);
+        setContentView(R.layout.main_form);
 
         newsTitle = (TextView)findViewById(R.id.newstitle);
         newsContent = (TextView)findViewById(R.id.newscontent);
-        selectNation = (EditText)findViewById(R.id.selectnation);
         this.myAlertBuilder = new AlertDialog.Builder(SuccessController.this);
         this.myAlertBuilder.setTitle("알림");
     }
@@ -76,6 +76,8 @@ public class SuccessController extends AppCompatActivity {
                         else {
                             newsTitle.setText(newsTitleData);
                             newsContent.setText(newsContentData);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(selectNation.getWindowToken(), 0);
                         }
                     }
                 });

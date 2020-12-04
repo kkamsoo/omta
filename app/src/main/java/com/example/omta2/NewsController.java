@@ -5,25 +5,31 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Html;
-import android.text.Spanned;
+import android.text.SpannableString;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Connection;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 
 public class NewsController extends AppCompatActivity {
     EditText edit;
     TextView newsTitle, newsContent;
     EditText selectNation;
     XmlPullParser xpp;
+    Spinner spinner;
 
     String nation = null;
     String newsTitleData, newsContentData;
@@ -32,11 +38,28 @@ public class NewsController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.news_form);
+        setContentView(R.layout.main_form);
 
+        spinner = findViewById(R.id.spinner);
+
+        ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.nations, android.R.layout.simple_spinner_dropdown_item);
+        //R.array.test는 저희가 정의해놓은 1월~12월 / android.R.layout.simple_spinner_dropdown_item은 기본으로 제공해주는 형식입니다.
+        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(monthAdapter); //어댑터에 연결해줍니다.
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            } //이 오버라이드 메소드에서 position은 몇번째 값이 클릭됬는지 알 수 있습니다.
+            //getItemAtPosition(position)를 통해서 해당 값을 받아올수있습니다.
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) { }
+        });
+        selectNation = findViewById(R.id.selectnation);
         newsTitle = (TextView)findViewById(R.id.newstitle);
         newsContent = (TextView)findViewById(R.id.newscontent);
-        selectNation = (EditText)findViewById(R.id.selectnation);
         this.myAlertBuilder = new AlertDialog.Builder(NewsController.this);
         this.myAlertBuilder.setTitle("알림");
     }
@@ -75,6 +98,8 @@ public class NewsController extends AppCompatActivity {
                         else {
                             newsTitle.setText(newsTitleData);
                             newsContent.setText(newsContentData);
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(selectNation.getWindowToken(), 0);
                         }
                     }
                 });
@@ -83,9 +108,26 @@ public class NewsController extends AppCompatActivity {
     }
 
     public void getNews(String nation) throws IOException {
-        String key ="W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
-        String queryUrl="http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey=" + key + "&type=xml&numOfRows=1&search1=" + nation;
+        String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
+        String queryUrl = "http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey=" + key + "&type=xml&numOfRows=1&search1=" + nation;
+        try {
+            Connection conn = Jsoup.connect(queryUrl);
+            Document doc = conn.get();
+            Elements newsTitle = doc.select("newsTitl");
+            newsTitleData = newsTitle.text();
 
+            Elements eles = doc.select("newsBdt");
+            for (Element ele : eles) {
+                Elements subnode = ele.select("data");
+                newsContentData += subnode.text();
+            }
+            SpannableString spanText = new SpannableString(Html.fromHtml(newsContentData, Html.FROM_HTML_MODE_COMPACT));
+            newsContentData = spanText.toString();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+        /*
         try{
             URL url= new URL(queryUrl);
             InputStream is= url.openStream();
@@ -130,4 +172,5 @@ public class NewsController extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    */
 }
