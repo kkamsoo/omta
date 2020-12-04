@@ -42,7 +42,6 @@ public class NewsController extends AppCompatActivity {
     }
 
     public void mOnClick(View v){
-
         myAlertBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
