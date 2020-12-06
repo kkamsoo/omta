@@ -9,15 +9,26 @@
     android:padding="10dp"
     android:background="@drawable/background2">
 
-    <TextView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
-        android:text="해외시장 뉴스"
-        android:textSize="30dp"
-        android:textColor="@color/black"
-        android:textAlignment="center"/>
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/backbutton"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backbuttonicon"
+            android:paddingTop="25dp">
+        </Button>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="해외시장 뉴스"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="35dp" />
+    />
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -51,14 +62,9 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.tabs.TabLayout>
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:dropDownWidth="200dp"
-            android:spinnerMode="dropdown" />
-        ﻿<EditText
+        ﻿
+
+        <EditText
             android:id="@+id/selectnation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -77,6 +83,37 @@
             android:text="입력"
             android:textSize="20sp"
             android:onClick="enterNation"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Spinner
+            android:id="@+id/nationspinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/nations"
+            android:dropDownWidth="200dp"
+            android:spinnerMode="dropdown" />
+        <Spinner
+            android:id="@+id/industryspinner"
+            android:entries="@array/industrys"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dropDownWidth="200dp"
+            android:spinnerMode="dropdown" />
+        <Spinner
+            android:id="@+id/tradespinner"
+            android:entries="@array/trades"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dropDownWidth="200dp"
+            android:spinnerMode="dropdown" />
     </LinearLayout>
 
     <TextView
@@ -101,4 +138,5 @@
             android:textColor="@color/black"
             />
     </ScrollView>
+
 </LinearLayout>

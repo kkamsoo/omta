@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -19,6 +19,9 @@
         <item name="android:textColorPrimary">@android:color/black</item>       <!-- 탭바 선택된 텍스트 -->
         <item name="android:textColorSecondary">@android:color/black</item>     <!-- 탭바 텍스트 -->
         <item name="android:textSize">15dp</item>
-        <item name="colorAccent">@android:color/white</item>                    <!-- 하단 움직이는 바 색-->
+        <item name="colorAccent">@android:color/black</item>                    <!-- 하단 움직이는 바 색-->
+    </style>
+    <style name="spinnerTheme">
+        <item name="android:textColor">@color/black</item>
     </style>
 </resources>

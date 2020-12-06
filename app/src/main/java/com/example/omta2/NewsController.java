@@ -29,7 +29,7 @@ public class NewsController extends AppCompatActivity {
     TextView newsTitle, newsContent;
     EditText selectNation;
     XmlPullParser xpp;
-    Spinner spinner;
+    Spinner nationSpinner, industrySpinner, tradeSpinner;
 
     String nation = null;
     String newsTitleData, newsContentData;
@@ -40,28 +40,40 @@ public class NewsController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_form);
 
-        spinner = findViewById(R.id.spinner);
+        nationSpinner = findViewById(R.id.nationspinner);
+        industrySpinner = findViewById(R.id.industryspinner);
+        tradeSpinner = findViewById(R.id.tradespinner);;
 
-        ArrayAdapter monthAdapter = ArrayAdapter.createFromResource(this, R.array.nations, android.R.layout.simple_spinner_dropdown_item);
-        //R.array.test는 저희가 정의해놓은 1월~12월 / android.R.layout.simple_spinner_dropdown_item은 기본으로 제공해주는 형식입니다.
-        monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(monthAdapter); //어댑터에 연결해줍니다.
+        // 국가 선택 스피너
+        ArrayAdapter nationAdapter = ArrayAdapter.createFromResource(this, R.array.nations, R.layout.color_spinner_layout);
+        nationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        nationSpinner.setAdapter(nationAdapter);
+        // 산업분류 선택 스피너
+        ArrayAdapter industryAdapter = ArrayAdapter.createFromResource(this, R.array.industrys, R.layout.color_spinner_layout);
+        industryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        industrySpinner.setAdapter(industryAdapter);
+        // 무역관 선택 스피너
+        ArrayAdapter tradeAdapter = ArrayAdapter.createFromResource(this, R.array.trades, R.layout.color_spinner_layout);
+        tradeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        tradeSpinner.setAdapter(tradeAdapter);
 
+        nationSpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        industrySpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        tradeSpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        nationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            } //이 오버라이드 메소드에서 position은 몇번째 값이 클릭됬는지 알 수 있습니다.
-            //getItemAtPosition(position)를 통해서 해당 값을 받아올수있습니다.
-
+            }
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
         });
         selectNation = findViewById(R.id.selectnation);
         newsTitle = (TextView)findViewById(R.id.newstitle);
         newsContent = (TextView)findViewById(R.id.newscontent);
+        /*
         this.myAlertBuilder = new AlertDialog.Builder(NewsController.this);
-        this.myAlertBuilder.setTitle("알림");
+        this.myAlertBuilder.setTitle("알림");*/
     }
 
     public void enterNation(View v){

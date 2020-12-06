@@ -5,4 +5,14 @@
         <item>중국</item>
         <item>일본</item>
     </string-array>
+    <string-array name="industrys">
+        <item>농림수산식품</item>
+        <item>광물/에너지</item>
+        <item>화학</item>
+    </string-array>
+    <string-array name="trades">
+        <item>과테말라무역관</item>
+        <item>광저우무역관</item>
+        <item>나고야무역관</item>
+    </string-array>
 </resources>
