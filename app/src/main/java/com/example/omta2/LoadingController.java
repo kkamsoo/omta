@@ -21,7 +21,7 @@ public class LoadingController extends AppCompatActivity {
             @Override
             public void run() {
 
-                Intent intent= new Intent(getApplicationContext(), MainController.class);
+                Intent intent= new Intent(getApplicationContext(), SelectMenuController.class);
                 startActivity(intent);  //Loagin화면을 띄운다.
                 finish();   //현재 액티비티 종료
             }

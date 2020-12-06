@@ -19,8 +19,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SelectMenuController" />
         <activity android:name=".MainController" />
-        <activity android:name=".NewsController" />
         <activity android:name=".NationController" />
         <activity android:name=".ProductController" />
         <activity android:name=".ScamController" />

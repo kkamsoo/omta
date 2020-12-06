@@ -36,28 +36,8 @@ public class NationController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_form);
 
-        //newsTitle = (TextView)findViewById(R.id.newstitle);
-        newsContent = (TextView)findViewById(R.id.newscontent);
-
         this.myAlertBuilder = new AlertDialog.Builder(NationController.this);
         this.myAlertBuilder.setTitle("알림");
-    }
-
-    public void enterNation(View v){
-        myAlertBuilder.setNegativeButton("Cancle", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(getApplicationContext(),"Pressed Cancle",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        switch (v.getId()){
-            case R.id.enternation:
-                nation = selectNation.getText().toString();
-                runNews();
-                break;
-        }
     }
 
     public void runNews() {
