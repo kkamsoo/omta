@@ -21,9 +21,10 @@
             android:paddingTop="25dp">
         </Button>
         <TextView
+            android:id="@+id/menutitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="해외시장 뉴스"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/black"
             android:fontFamily="@font/nanumbrush"

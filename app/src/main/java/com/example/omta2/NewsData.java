@@ -14,6 +14,7 @@ import java.io.Serializable;
 
 public class NewsData implements Serializable {
     public String newsTitl; // 뉴스 제목
+    public String newsBdt; // 뉴스 본문
     public String cntntSumar; // 뉴스 요약
 
     public NewsData(String newsTitl, String cntntSumar){
@@ -28,6 +29,10 @@ public class NewsData implements Serializable {
     public void setNewsTitl(String newsTitl) {
         this.newsTitl = newsTitl;
     }
+
+    public String getNewsBdt() { return newsBdt; }
+
+    public void setNewsBdt(String newsBdt) { this.newsBdt = newsBdt; }
 
     public String getCntntSumar() {
         return cntntSumar;

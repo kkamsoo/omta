@@ -10,8 +10,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
-    Context mContext = null;
-    LayoutInflater mLayoutInflater = null;
+    Context mContext;
+    LayoutInflater mLayoutInflater;
     ArrayList<NewsData> sample;
 
     public ListViewAdapter(Context context, ArrayList<NewsData> data) {
@@ -37,7 +37,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.my_list_view, null);
+        View view = mLayoutInflater.inflate(R.layout.listview_layout, null);
 
         TextView newsTitle = (TextView)view.findViewById(R.id.newsTitle);
         TextView newsSummary = (TextView)view.findViewById(R.id.newsSummary);

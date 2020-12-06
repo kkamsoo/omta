@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.SpannableString;
-import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SelectMenuController extends AppCompatActivity {
-    private String firstNewsTitleData;
-    private String firstNewsContentData;
-    ArrayList<NewsData> newsList = new ArrayList<NewsData>();
+    ArrayList<NewsData> newsList = new ArrayList<>();
+    APIController apiController = new APIController();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.selectmenu_form);
+        setContentView(R.layout.selectmenu_layout);
 
         Button newsButton = (Button) findViewById(R.id.overseasNews);
         Button nationButton = (Button) findViewById(R.id.nationInformation);
@@ -37,78 +37,65 @@ public class SelectMenuController extends AppCompatActivity {
         Button productButton = (Button) findViewById(R.id.productDB);
         Button exitButton = (Button) findViewById(R.id.exit);
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    newsList = getNewsFromAPI("미국");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        new Thread(() -> {
+            try {
+                newsList = apiController.getNewsFromAPI("미국");
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
 
-        newsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainController.class);
-                intent.putExtra("NewsList", newsList);
-                startActivity(intent);
-            }
+        newsButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NewsList", newsList);
+            intent.putExtra("menuTitle", "해외 시장 뉴스");
+            startActivity(intent);
         });
-        nationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainController.class);
-                startActivity(intent);
-            }
-        });
-        successButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainController.class);
-                startActivity(intent);
-            }
-        });
-        scamButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainController.class);
-                startActivity(intent);
-            }
-        });
-        productButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainController.class);
-                startActivity(intent);
-            }
-        });
-        exitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new AlertDialog.Builder(SelectMenuController.this)
-                        .setTitle("Application 종료")
-                        .setMessage("어플리케이션을 종료하시겠습니까?")
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(SelectMenuController.this, "어플리케이션이 종료되었습니다.", Toast.LENGTH_SHORT).show();
-                                finish();
-                            }
-                        })
-                        .setNegativeButton("NO", null)
-                        .setIcon(android.R.drawable.ic_dialog_alert).show();
-            }
+        nationButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NewsList", newsList);
+            intent.putExtra("menuTitle", "국가 정보");
+            startActivity(intent);
         });
+        successButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NewsList", newsList);
+            intent.putExtra("menuTitle", "기업 성공 사례");
+            startActivity(intent);
+        });
+        scamButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NewsList", newsList);
+            intent.putExtra("menuTitle", "무역 사기 사례");
+            startActivity(intent);
+        });
+        productButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NewsList", newsList);
+            intent.putExtra("menuTitle", "상품 DB");
+            startActivity(intent);
+        });
+        exitButton.setOnClickListener(view -> new AlertDialog.Builder(SelectMenuController.this)
+                .setTitle("Application 종료")
+                .setMessage("어플리케이션을 종료하시겠습니까?")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(SelectMenuController.this, "어플리케이션이 종료되었습니다.", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                })
+                .setNegativeButton("NO", null)
+                .setIcon(android.R.drawable.ic_dialog_alert).show());
     }
     // API를 사용해서 뉴스데이터를 가져오는 메소드
     public ArrayList<NewsData> getNewsFromAPI(String nation) throws IOException {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
         String queryUrl = "http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey=" + key + "&type=xml&numOfRows=5&search1=" + nation;
 
-        ArrayList<NewsData> newsList = new ArrayList<NewsData>();
+        ArrayList<NewsData> newsList = new ArrayList<>();
 
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다

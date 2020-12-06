@@ -21,7 +21,7 @@
             android:id="@+id/newsTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:layout_margin="10dp"
             android:layout_marginBottom="10dp"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -32,6 +32,7 @@
             android:id="@+id/newsSummary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:maxLines="4"

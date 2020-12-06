@@ -10,21 +10,16 @@ public class LoadingController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.loading_form);
-
+        setContentView(R.layout.loading_layout);
         startLoading();
     }
 
     private void startLoading() {
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                Intent intent= new Intent(getApplicationContext(), SelectMenuController.class);
-                startActivity(intent);  //Loagin화면을 띄운다.
-                finish();   //현재 액티비티 종료
-            }
-        }, 2000); // 화면에 Logo 2초간 보이기
+        handler.postDelayed(() -> {
+            Intent intent= new Intent(getApplicationContext(), SelectMenuController.class);
+            startActivity(intent);  //Loagin화면을 띄운다.
+            finish();   //현재 액티비티 종료
+        }, 1000); // 화면에 Logo 2초간 보이기
     }
 }

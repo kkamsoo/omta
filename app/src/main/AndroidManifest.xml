@@ -21,10 +21,6 @@
         </activity>
         <activity android:name=".SelectMenuController" />
         <activity android:name=".MainController" />
-        <activity android:name=".NationController" />
-        <activity android:name=".ProductController" />
-        <activity android:name=".ScamController" />
-        <activity android:name=".SuccessController" />
     </application>
 
 </manifest>
