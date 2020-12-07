@@ -12,6 +12,8 @@
             android:id="@+id/detailbackbutton"
             android:layout_width="40dp"
             android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/backbuttonicon"
             android:paddingTop="25dp">
         </Button>
@@ -25,7 +27,6 @@
             android:text="제목"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:fontFamily="@font/nanumbrush"
             android:textSize="40dp" />
     </FrameLayout>
     <ScrollView

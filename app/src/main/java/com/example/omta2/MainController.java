@@ -6,8 +6,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -26,7 +24,6 @@ public class MainController extends AppCompatActivity {
     Spinner nationSpinner, industrySpinner, tradeSpinner;
     Button backButton;
 
-    APIController apiController = new APIController(); // API컨트롤러 객체 생성;
     ArrayList<NewsData> newsDataList;
     ArrayList<SuccessData> successDataList;
     ArrayList<NationData> nationDataList;
@@ -34,64 +31,27 @@ public class MainController extends AppCompatActivity {
     ArrayList<ProductData> productDataList;
 
     ListView listView;
-    ListViewAdapter newsListAdapter;
-    ListViewAdapter nationListAdapter;
-    ListViewAdapter successListAdapter;
-    ListViewAdapter scamListAdapter;
-    ListViewAdapter productListAdapter;
+    ListViewAdapter listAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-
-        new Thread(() -> {
-            try {
-                newsDataList = apiController.getNewsFromAPI("미국");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                successDataList = apiController.getSuccessFromAPI("미국");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-        loagindDialog = ProgressDialog.show(this, "Connecting",
-                "Loading. Please wait...", true, false);
-
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                try {
-                    nationDataList = apiController.getNationFromAPI("VN");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                handler.sendEmptyMessage(0);
-            }
-        });
-        thread.start();
-
-        new Thread(() -> {
-            try {
-                scamDataList = apiController.getScamFromAPI("미국");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                productDataList = apiController.getProductFromAPI("미국");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
         this.context = this;
+
+        // 비동기 통신
+        GetNewsAPI newsAPI = new GetNewsAPI("미국");
+        GetSuccessAPI successAPI = new GetSuccessAPI("미국");
+        GetScamAPI scamAPI = new GetScamAPI("미국");
+        GetNationAPI nationAPI = new GetNationAPI(context, "VN");
+        GetProductAPI productAPI = new GetProductAPI(context, "미국");
+
+        newsAPI.execute();
+        successAPI.execute();
+        scamAPI.execute();
+        nationAPI.execute();
+        productAPI.execute();
+
         // 상단 타이틀 텍스트 설정
         TextView menuTitle = (TextView) findViewById(R.id.menutitle);
         menuTitle.setText(getIntent().getStringExtra("menuTitle"));
@@ -99,10 +59,37 @@ public class MainController extends AppCompatActivity {
         // 뒤로가기 버튼 이벤트 처리
         backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> onBackPressed());
-
+        
         // 리스트뷰 생성
         listView = (ListView) findViewById(R.id.listView);
 
+        // 카테고리별 데이터리스트 초기값 받아오기
+        newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
+        successDataList = (ArrayList<SuccessData>) getIntent().getSerializableExtra("SuccessList");
+        nationDataList = (ArrayList<NationData>) getIntent().getSerializableExtra("NationList");
+        scamDataList = (ArrayList<ScamData>) getIntent().getSerializableExtra("ScamList");
+        productDataList = (ArrayList<ProductData>) getIntent().getSerializableExtra("ProductList");
+
+        if(menuTitle.getText().equals("해외 시장 뉴스")) {
+            listAdapter = new ListViewAdapter(context, newsDataList);
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("기업 성공 사례")) {
+            listAdapter = new ListViewAdapter(context, successDataList);
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("국가 정보")) {
+            listAdapter = new ListViewAdapter(context, nationDataList);
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("무역 사기 사례")) {
+            listAdapter = new ListViewAdapter(context, scamDataList);
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("상품 DB")) {
+            listAdapter = new ListViewAdapter(context, productDataList);
+            listView.setAdapter(listAdapter);
+        }
         // 탭 이벤트 처리
         TabLayout tabLayout = findViewById(R.id.tablayout);
         int tabIndex = getIntent().getIntExtra("TabIndex", 0); // 탭 인덱스 가져오기
@@ -110,61 +97,53 @@ public class MainController extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println(tab.getPosition() + "번");
                 if(tab.getPosition() == 0) {
-                    newsListAdapter = new ListViewAdapter(context, newsDataList, "NewsData");
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            newsListAdapter.data = newsDataList;
-                            newsListAdapter.notifyDataSetChanged();
-                            listView.setAdapter(newsListAdapter);
+                            listAdapter.data = newsAPI.newsList;
+                            listAdapter.notifyDataSetChanged();
+                            listView.setAdapter(listAdapter);
                         }
                     });
                 }
                 else if(tab.getPosition() == 1) {
-                    successListAdapter = new ListViewAdapter(context, successDataList, "SuccessData");
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            successListAdapter.data = successDataList;
-                            successListAdapter.notifyDataSetChanged();
-                            listView.setAdapter(successListAdapter);
+                            listAdapter.data = successAPI.successList;
+                            listAdapter.notifyDataSetChanged();
+                            listView.setAdapter(listAdapter);
                         }
                     });
                 }
                 else if(tab.getPosition() == 2) {
-                    scamListAdapter = new ListViewAdapter(context, scamDataList, "ScamData");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            scamListAdapter.data = scamDataList;
-                            scamListAdapter.notifyDataSetChanged();
-                            listView.setAdapter(scamListAdapter);
+                            listAdapter.data = scamAPI.scamList;
+                            listAdapter.notifyDataSetChanged();
+                            listView.setAdapter(listAdapter);
                         }
                     });
                 }
                 else if(tab.getPosition() == 3) {
-                    nationListAdapter = new ListViewAdapter(context, nationDataList, "NationData");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            nationListAdapter.data = nationDataList;
-                            nationListAdapter.notifyDataSetChanged();
-                            listView.setAdapter(nationListAdapter);
+                            listAdapter.data = nationAPI.nationList;
+                            listAdapter.notifyDataSetChanged();
+                            listView.setAdapter(listAdapter);
                         }
                     });
                 }
                 else if(tab.getPosition() == 4) {
-                    productListAdapter = new ListViewAdapter(context, productDataList, "ProductData");
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            productListAdapter.data = productDataList;
-                            productListAdapter.notifyDataSetChanged();
-                            listView.setAdapter(productListAdapter);
+                            listAdapter.data = productAPI.productList;
+                            listAdapter.notifyDataSetChanged();
+                            listView.setAdapter(listAdapter);
                         }
                     });
                 }
@@ -203,42 +182,22 @@ public class MainController extends AppCompatActivity {
         nationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String nation = nationSpinner.getItemAtPosition(position).toString();
+                newsAPI.nation = nation;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
+                    }
+                });
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-
-        // 카테고리별 데이터리스트 받아오기
-        newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
-        successDataList = (ArrayList<SuccessData>) getIntent().getSerializableExtra("SuccessList");
-        nationDataList = (ArrayList<NationData>) getIntent().getSerializableExtra("NationList");
-        scamDataList = (ArrayList<ScamData>) getIntent().getSerializableExtra("ScamList");
-        productDataList = (ArrayList<ProductData>) getIntent().getSerializableExtra("ProductList");
-
-
-        if(menuTitle.getText().equals("해외 시장 뉴스")) {
-            newsListAdapter = new ListViewAdapter((Context) this, newsDataList, "NewsData");
-            listView.setAdapter(newsListAdapter);
-        }
-        else if(menuTitle.getText().equals("기업 성공 사례")) {
-            successListAdapter = new ListViewAdapter((Context) this, successDataList, "SuccessData");
-            listView.setAdapter(successListAdapter);
-        }
-        else if(menuTitle.getText().equals("국가 정보")) {
-            nationListAdapter = new ListViewAdapter((Context) this, nationDataList, "NationData");
-            listView.setAdapter(nationListAdapter);
-        }
-        else if(menuTitle.getText().equals("무역 사기 사례")) {
-            scamListAdapter = new ListViewAdapter((Context) this, scamDataList, "ScamData");
-            listView.setAdapter(scamListAdapter);
-        }
-        else if(menuTitle.getText().equals("상품 DB")) {
-            productListAdapter = new ListViewAdapter((Context) this, productDataList, "ProductData");
-            listView.setAdapter(productListAdapter);
-        }
-        
         // 리스트뷰에 있는 데이터 클릭시 이벤트 처리
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -273,12 +232,4 @@ public class MainController extends AppCompatActivity {
             }
         });
     }
-    private ProgressDialog loagindDialog; // Loading Dialog
-
-
-    private Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            loagindDialog.dismiss();
-        }
-    };
 }

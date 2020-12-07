@@ -15,12 +15,10 @@ public class ListViewAdapter<T> extends BaseAdapter {
     Context context;
     LayoutInflater layoutInflater;
     ArrayList<T> data;
-    String dataName;
 
-    public ListViewAdapter(Context context, ArrayList data, String dataName) {
+    public ListViewAdapter(Context context, ArrayList data) {
         this.context = context;
         this.data = data;
-        this.dataName = dataName;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
@@ -39,7 +37,6 @@ public class ListViewAdapter<T> extends BaseAdapter {
         return data.get(position);
     }
 
-
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.listview_layout, null);
@@ -47,35 +44,36 @@ public class ListViewAdapter<T> extends BaseAdapter {
         TextView objectTitle = (TextView)view.findViewById(R.id.objectTitle);
         TextView objectSummary = (TextView)view.findViewById(R.id.objectSummary);
 
-        if(dataName.equals("NewsData")) {
+        if(data.get(0).getClass().getSimpleName().equals("NewsData")) {
             ArrayList<NewsData> newsData = (ArrayList<NewsData>) data;
             objectTitle.setText(newsData.get(position).getNewsTitl());
             objectSummary.setText(newsData.get(position).getCntntSumar());
         }
 
-        else if(dataName.equals("SuccessData")) {
+        else if(data.get(0).getClass().getSimpleName().equals("SuccessData")) {
             ArrayList<SuccessData> successData = (ArrayList<SuccessData>) data;
             objectTitle.setText(successData.get(position).getTitl());
             objectSummary.setText(successData.get(position).getBdtCntnt());
         }
 
-        else if(dataName.equals("NationData")) {
+        else if(data.get(0).getClass().getSimpleName().equals("NationData")) {
             ArrayList<NationData> nationData = (ArrayList<NationData>) data;
             objectTitle.setText(nationData.get(position).getNatnNm());
             objectSummary.setText(nationData.get(position).getPoltcCntnt());
         }
 
-        else if(dataName.equals("ScamData")) {
+        else if(data.get(0).getClass().getSimpleName().equals("ScamData")) {
             ArrayList<ScamData> scamData = (ArrayList<ScamData>) data;
             objectTitle.setText(scamData.get(position).getTitl());
             objectSummary.setText(scamData.get(position).getBdtCntnt());
         }
 
-        else if(dataName.equals("ProductData")) {
+        else if(data.get(0).getClass().getSimpleName().equals("ProductData")) {
             ArrayList<ProductData> productData = (ArrayList<ProductData>) data;
             objectTitle.setText(productData.get(position).getTitl());
             objectSummary.setText(productData.get(position).getBdtCntnt());
         }
+        this.notifyDataSetChanged();
 
         return view;
     }
