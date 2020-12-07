@@ -30,8 +30,9 @@ public class SelectMenuController extends AppCompatActivity {
         GetSuccessAPI successAPI = new GetSuccessAPI("미국");
         GetScamAPI scamAPI = new GetScamAPI("미국");
         GetNationAPI nationAPI = new GetNationAPI(this, "미국");
-        GetProductAPI productAPI = new GetProductAPI(this,"미국");
+        GetProductAPI productAPI = new GetProductAPI("미국");
 
+        // 백그라운드 실행
         newsAPI.execute();
         successAPI.execute();
         scamAPI.execute();

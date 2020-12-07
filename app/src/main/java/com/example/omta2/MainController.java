@@ -44,8 +44,9 @@ public class MainController extends AppCompatActivity {
         GetSuccessAPI successAPI = new GetSuccessAPI("미국");
         GetScamAPI scamAPI = new GetScamAPI("미국");
         GetNationAPI nationAPI = new GetNationAPI(context, "VN");
-        GetProductAPI productAPI = new GetProductAPI(context, "미국");
+        GetProductAPI productAPI = new GetProductAPI("미국");
 
+        // 백그라운드 실행
         newsAPI.execute();
         successAPI.execute();
         scamAPI.execute();
@@ -63,7 +64,7 @@ public class MainController extends AppCompatActivity {
         // 리스트뷰 생성
         listView = (ListView) findViewById(R.id.listView);
 
-        // 카테고리별 데이터리스트 초기값 받아오기
+        // 카테고리별 데이터리스트 초기값 설정
         newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
         successDataList = (ArrayList<SuccessData>) getIntent().getSerializableExtra("SuccessList");
         nationDataList = (ArrayList<NationData>) getIntent().getSerializableExtra("NationList");
@@ -98,53 +99,38 @@ public class MainController extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listAdapter.data = newsAPI.newsList;
-                            listAdapter.notifyDataSetChanged();
-                            listView.setAdapter(listAdapter);
-                        }
+                    runOnUiThread(() -> {
+                        listAdapter.data = newsAPI.newsList;
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 1) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listAdapter.data = successAPI.successList;
-                            listAdapter.notifyDataSetChanged();
-                            listView.setAdapter(listAdapter);
-                        }
+                    runOnUiThread(() -> {
+                        listAdapter.data = successAPI.successList;
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 2) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listAdapter.data = scamAPI.scamList;
-                            listAdapter.notifyDataSetChanged();
-                            listView.setAdapter(listAdapter);
-                        }
+                    runOnUiThread(() -> {
+                        listAdapter.data = scamAPI.scamList;
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 3) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listAdapter.data = nationAPI.nationList;
-                            listAdapter.notifyDataSetChanged();
-                            listView.setAdapter(listAdapter);
-                        }
+                    runOnUiThread(() -> {
+                        listAdapter.data = nationAPI.nationList;
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 4) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            listAdapter.data = productAPI.productList;
-                            listAdapter.notifyDataSetChanged();
-                            listView.setAdapter(listAdapter);
-                        }
+                    runOnUiThread(() -> {
+                        listAdapter.data = productAPI.productList;
+                        listAdapter.notifyDataSetChanged();
+                        listView.setAdapter(listAdapter);
                     });
                 }
             }
@@ -182,16 +168,18 @@ public class MainController extends AppCompatActivity {
         nationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String nation = nationSpinner.getItemAtPosition(position).toString();
-                newsAPI.nation = nation;
+                if(position > 0) {
+                    String nation = nationSpinner.getItemAtPosition(position).toString();
+                    GetNewsAPI newsAPI = new GetNewsAPI(nation);
+                    newsAPI.nation = nation;
+                    newsAPI.execute();
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    runOnUiThread(() -> {
+                        listAdapter.data = newsAPI.newsList;
                         listAdapter.notifyDataSetChanged();
                         listView.setAdapter(listAdapter);
-                    }
-                });
+                    });
+                }
             }
 
             @Override

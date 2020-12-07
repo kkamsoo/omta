@@ -20,6 +20,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, Void> {
     public GetNewsAPI(String nation) {
         this.nation = nation;
     }
+
     @Override
     protected Void doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";

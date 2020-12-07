@@ -24,7 +24,7 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
         this.context = context;
         this.nation = nation;
     }
-
+/*
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -33,7 +33,7 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
         dialog.setCancelable(false);
         dialog.show();
     }
-
+*/
     @Override
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
@@ -64,10 +64,10 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
 
         return null;
     }
-
+/*
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
         dialog.dismiss();
-    }
+    }*/
 }
