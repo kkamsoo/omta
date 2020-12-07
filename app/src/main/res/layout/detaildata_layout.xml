@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/detailbackbutton"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:background="@drawable/backbuttonicon"
+            android:paddingTop="25dp">
+        </Button>
+        <TextView
+            android:id="@+id/detailtitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="50dp"
+            android:text="제목"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:fontFamily="@font/nanumbrush"
+            android:textSize="40dp" />
+    </FrameLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        <TextView
+            android:id="@+id/detailcontent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="30dp"
+            android:textColor="@color/black" />
+    </ScrollView>
+
+</LinearLayout>

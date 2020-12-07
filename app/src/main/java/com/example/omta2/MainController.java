@@ -2,6 +2,7 @@ package com.example.omta2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -101,9 +102,40 @@ public class MainController extends AppCompatActivity {
             listAdapter = new ListViewAdapter(this, productDataList, "ProductData");
             listView.setAdapter(listAdapter);
         }
+        
+        // 리스트뷰에 있는 데이터 클릭시 이벤트 처리
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getApplicationContext(), DetailController.class);
+                Object item = listView.getAdapter().getItem(i);
 
-        listView.setOnItemClickListener((parent, v, position, id) -> Toast.makeText(getApplicationContext(),
-                "클릭", Toast.LENGTH_LONG).show());
+                if(menuTitle.getText().equals("해외 시장 뉴스")) {
+                    NewsData data = (NewsData) item;
+                    intent.putExtra("item",  data);
+                }
+                else if(menuTitle.getText().equals("기업 성공 사례")) {
+                    SuccessData data = (SuccessData) item;
+                    intent.putExtra("item",  data);
+                }
+
+                else if(menuTitle.getText().equals("국가 정보")) {
+                    NationData data = (NationData) item;
+                    intent.putExtra("item",  data);
+                }
+                else if(menuTitle.getText().equals("무역 사기 사례")) {
+                    ScamData data = (ScamData) item;
+                    intent.putExtra("item",  data);
+                }
+                else if(menuTitle.getText().equals("상품 DB")) {
+                    ProductData data = (ProductData) item;
+                    intent.putExtra("item",  data);
+                }
+                intent.putExtra("category", menuTitle.getText());
+
+                startActivity(intent);
+            }
+        });
     }
 
     public void initializeNewsData() {
