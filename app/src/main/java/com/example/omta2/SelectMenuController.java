@@ -22,8 +22,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class SelectMenuController extends AppCompatActivity {
-    ArrayList<NewsData> newsList = new ArrayList<>();
     APIController apiController = new APIController();
+    ArrayList<NewsData> newsList = new ArrayList<>();
+    ArrayList<SuccessData> successList = new ArrayList<>();
+    ArrayList<NationData> nationList = new ArrayList<>();
+    ArrayList<ScamData> scamList = new ArrayList<>();
+    ArrayList<ProductData> productList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +35,8 @@ public class SelectMenuController extends AppCompatActivity {
         setContentView(R.layout.selectmenu_layout);
 
         Button newsButton = (Button) findViewById(R.id.overseasNews);
-        Button nationButton = (Button) findViewById(R.id.nationInformation);
         Button successButton = (Button) findViewById(R.id.successStory);
+        Button nationButton = (Button) findViewById(R.id.nationInformation);
         Button scamButton = (Button) findViewById(R.id.scamStory);
         Button productButton = (Button) findViewById(R.id.productDB);
         Button exitButton = (Button) findViewById(R.id.exit);
@@ -45,6 +49,38 @@ public class SelectMenuController extends AppCompatActivity {
             }
         }).start();
 
+        new Thread(() -> {
+            try {
+                successList = apiController.getSuccessFromAPI("미국");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                nationList = apiController.getNationFromAPI("VN");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                scamList = apiController.getScamFromAPI("미국");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                productList = apiController.getProductFromAPI("미국");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
         newsButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
             intent.putExtra("NewsList", newsList);
@@ -52,34 +88,36 @@ public class SelectMenuController extends AppCompatActivity {
             startActivity(intent);
         });
 
-        nationButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), MainController.class);
-            intent.putExtra("NewsList", newsList);
-            intent.putExtra("menuTitle", "국가 정보");
-            startActivity(intent);
-        });
         successButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
-            intent.putExtra("NewsList", newsList);
+            intent.putExtra("SuccessList", successList);
             intent.putExtra("menuTitle", "기업 성공 사례");
             startActivity(intent);
         });
+
+        nationButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NationList", nationList);
+            intent.putExtra("menuTitle", "국가 정보");
+            startActivity(intent);
+        });
+
         scamButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
-            intent.putExtra("NewsList", newsList);
+            intent.putExtra("ScamList", scamList);
             intent.putExtra("menuTitle", "무역 사기 사례");
             startActivity(intent);
         });
         productButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
-            intent.putExtra("NewsList", newsList);
+            intent.putExtra("ProductList", productList);
             intent.putExtra("menuTitle", "상품 DB");
             startActivity(intent);
         });
         exitButton.setOnClickListener(view -> new AlertDialog.Builder(SelectMenuController.this)
                 .setTitle("Application 종료")
                 .setMessage("어플리케이션을 종료하시겠습니까?")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -89,37 +127,5 @@ public class SelectMenuController extends AppCompatActivity {
                 })
                 .setNegativeButton("NO", null)
                 .setIcon(android.R.drawable.ic_dialog_alert).show());
-    }
-    // API를 사용해서 뉴스데이터를 가져오는 메소드
-    public ArrayList<NewsData> getNewsFromAPI(String nation) throws IOException {
-        String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
-        String queryUrl = "http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey=" + key + "&type=xml&numOfRows=5&search1=" + nation;
-
-        ArrayList<NewsData> newsList = new ArrayList<>();
-
-        try {
-            Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
-            Document doc = conn.get();
-            Elements elements = doc.select("item");
-
-            for (Element element : elements) {
-                NewsData newsData = new NewsData("", ""); // 뉴스 데이터 하나 생성
-                Elements newsTitle = element.select("newsTitl"); // 뉴스타이틀 데이터 가져오기
-                newsData.newsTitl = newsTitle.text();
-
-                Elements eles = element.select("cntntSumar"); // 뉴스요약 데이터 가져오기
-                for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    newsData.cntntSumar += subNode.text();
-                }
-                SpannableString spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
-                newsData.cntntSumar = spanText.toString(); // 삭제하고 남은 스트링데이터
-                newsList.add(newsData); // 최종 뉴스데이터를 뉴스 리스트에 추가
-            }
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return newsList;
     }
 }

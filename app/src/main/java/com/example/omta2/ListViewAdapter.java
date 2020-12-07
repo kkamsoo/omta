@@ -9,20 +9,22 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ListViewAdapter extends BaseAdapter {
-    Context mContext;
-    LayoutInflater mLayoutInflater;
-    ArrayList<NewsData> sample;
+public class ListViewAdapter<T> extends BaseAdapter {
+    Context context;
+    LayoutInflater layoutInflater;
+    ArrayList<T> data;
+    String dataName;
 
-    public ListViewAdapter(Context context, ArrayList<NewsData> data) {
-        mContext = context;
-        sample = data;
-        mLayoutInflater = LayoutInflater.from(mContext);
+    public ListViewAdapter(Context context, ArrayList<T> data, String dataName) {
+        this.context = context;
+        this.data = data;
+        this.dataName = dataName;
+        this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return sample.size();
+        return data.size();
     }
 
     @Override
@@ -31,19 +33,47 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public NewsData getItem(int position) {
-        return sample.get(position);
+    public Object getItem(int position) {
+        return data.get(position);
     }
+
 
     @Override
     public View getView(int position, View converView, ViewGroup parent) {
-        View view = mLayoutInflater.inflate(R.layout.listview_layout, null);
+        View view = layoutInflater.inflate(R.layout.listview_layout, null);
 
-        TextView newsTitle = (TextView)view.findViewById(R.id.newsTitle);
-        TextView newsSummary = (TextView)view.findViewById(R.id.newsSummary);
+        TextView objectTitle = (TextView)view.findViewById(R.id.objectTitle);
+        TextView objectSummary = (TextView)view.findViewById(R.id.objectSummary);
 
-        newsTitle.setText(sample.get(position).getNewsTitl());
-        newsSummary.setText(sample.get(position).getCntntSumar());
+        if(dataName.equals("NewsData")) {
+            ArrayList<NewsData> newsData = (ArrayList<NewsData>) data;
+            objectTitle.setText(newsData.get(position).getNewsTitl());
+            objectSummary.setText(newsData.get(position).getCntntSumar());
+        }
+
+        else if(dataName.equals("SuccessData")) {
+            ArrayList<SuccessData> successData = (ArrayList<SuccessData>) data;
+            objectTitle.setText(successData.get(position).getTitl());
+            objectSummary.setText(successData.get(position).getBdtCntnt());
+        }
+
+        else if(dataName.equals("NationData")) {
+            ArrayList<NationData> nationData = (ArrayList<NationData>) data;
+            objectTitle.setText(nationData.get(position).getNatnNm());
+            objectSummary.setText(nationData.get(position).getPoltcCntnt());
+        }
+
+        else if(dataName.equals("ScamData")) {
+            ArrayList<ScamData> scamData = (ArrayList<ScamData>) data;
+            objectTitle.setText(scamData.get(position).getTitl());
+            objectSummary.setText(scamData.get(position).getBdtCntnt());
+        }
+
+        else if(dataName.equals("ProductData")) {
+            ArrayList<ProductData> productData = (ArrayList<ProductData>) data;
+            objectTitle.setText(productData.get(position).getTitl());
+            objectSummary.setText(productData.get(position).getBdtCntnt());
+        }
 
         return view;
     }

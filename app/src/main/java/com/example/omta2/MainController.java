@@ -20,6 +20,10 @@ public class MainController extends AppCompatActivity {
 
     APIController apiController = new APIController(); // API컨트롤러 객체 생성;
     ArrayList<NewsData> newsDataList;
+    ArrayList<SuccessData> successDataList;
+    ArrayList<NationData> nationDataList;
+    ArrayList<ScamData> scamDataList;
+    ArrayList<ProductData> productDataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +36,6 @@ public class MainController extends AppCompatActivity {
 
         // 뒤로가기 버튼 이벤트 처리
         backButton = findViewById(R.id.backbutton);
-        newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
         backButton.setOnClickListener(v -> onBackPressed());
 
         // 스피너 이벤트 처리
@@ -67,18 +70,44 @@ public class MainController extends AppCompatActivity {
             }
         });
 
-        // 리스트뷰 어댑터
-        ListView listView = (ListView) findViewById(R.id.listView);
-        final ListViewAdapter listAdapter = new ListViewAdapter(this, newsDataList);
+        // 카테고리별 데이터리스트 받아오기
+        newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
+        successDataList = (ArrayList<SuccessData>) getIntent().getSerializableExtra("SuccessList");
+        nationDataList = (ArrayList<NationData>) getIntent().getSerializableExtra("NationList");
+        scamDataList = (ArrayList<ScamData>) getIntent().getSerializableExtra("ScamList");
+        productDataList = (ArrayList<ProductData>) getIntent().getSerializableExtra("ProductList");
 
-        listView.setAdapter(listAdapter);
+        // 리스트뷰 생성
+        ListViewAdapter listAdapter = null;
+        ListView listView = (ListView) findViewById(R.id.listView);
+
+        if(menuTitle.getText().equals("해외 시장 뉴스")) {
+            listAdapter = new ListViewAdapter(this, newsDataList, "NewsData");
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("기업 성공 사례")) {
+            listAdapter = new ListViewAdapter(this, successDataList, "SuccessData");
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("국가 정보")) {
+            listAdapter = new ListViewAdapter(this, nationDataList, "NationData");
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("무역 사기 사례")) {
+            listAdapter = new ListViewAdapter(this, scamDataList, "ScamData");
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("상품 DB")) {
+            listAdapter = new ListViewAdapter(this, productDataList, "ProductData");
+            listView.setAdapter(listAdapter);
+        }
 
         listView.setOnItemClickListener((parent, v, position, id) -> Toast.makeText(getApplicationContext(),
                 "클릭", Toast.LENGTH_LONG).show());
     }
 
     public void initializeNewsData() {
-        newsDataList = new ArrayList<NewsData>();
+        newsDataList = new ArrayList<>();
         NewsData newsData = new NewsData("", "");
         newsDataList.add(newsData);
     }
