@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DetailController extends AppCompatActivity {
+public class ListDetailController extends AppCompatActivity {
     TextView detailTitle;
     TextView detailContent;
 

@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 
 public class ListViewAdapter<T> extends BaseAdapter {
@@ -15,7 +17,7 @@ public class ListViewAdapter<T> extends BaseAdapter {
     ArrayList<T> data;
     String dataName;
 
-    public ListViewAdapter(Context context, ArrayList<T> data, String dataName) {
+    public ListViewAdapter(Context context, ArrayList data, String dataName) {
         this.context = context;
         this.data = data;
         this.dataName = dataName;

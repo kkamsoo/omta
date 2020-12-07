@@ -85,6 +85,7 @@ public class SelectMenuController extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
             intent.putExtra("NewsList", newsList);
             intent.putExtra("menuTitle", "해외 시장 뉴스");
+            intent.putExtra("TabIndex", 0);
             startActivity(intent);
         });
 
@@ -92,13 +93,7 @@ public class SelectMenuController extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
             intent.putExtra("SuccessList", successList);
             intent.putExtra("menuTitle", "기업 성공 사례");
-            startActivity(intent);
-        });
-
-        nationButton.setOnClickListener(view -> {
-            Intent intent = new Intent(getApplicationContext(), MainController.class);
-            intent.putExtra("NationList", nationList);
-            intent.putExtra("menuTitle", "국가 정보");
+            intent.putExtra("TabIndex", 1);
             startActivity(intent);
         });
 
@@ -106,12 +101,23 @@ public class SelectMenuController extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
             intent.putExtra("ScamList", scamList);
             intent.putExtra("menuTitle", "무역 사기 사례");
+            intent.putExtra("TabIndex", 2);
             startActivity(intent);
         });
+
+        nationButton.setOnClickListener(view -> {
+            Intent intent = new Intent(getApplicationContext(), MainController.class);
+            intent.putExtra("NationList", nationList);
+            intent.putExtra("menuTitle", "국가 정보");
+            intent.putExtra("TabIndex", 3);
+            startActivity(intent);
+        });
+
         productButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);
             intent.putExtra("ProductList", productList);
             intent.putExtra("menuTitle", "상품 DB");
+            intent.putExtra("TabIndex", 4);
             startActivity(intent);
         });
         exitButton.setOnClickListener(view -> new AlertDialog.Builder(SelectMenuController.this)

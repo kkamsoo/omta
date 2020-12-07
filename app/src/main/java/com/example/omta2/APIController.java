@@ -1,5 +1,8 @@
 package com.example.omta2;
 
+import android.app.ProgressDialog;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Html;
 import android.text.SpannableString;
 

@@ -43,7 +43,7 @@
             app:tabTextAppearance="@style/MyCustomTabTextAppearance"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:id="@+id/tab2"
+            android:id="@+id/tablayout"
             android:theme="@style/TabTheme">
             <com.google.android.material.tabs.TabItem
                 android:text="해외시장"
