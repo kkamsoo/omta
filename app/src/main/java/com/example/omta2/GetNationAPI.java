@@ -56,12 +56,12 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
             for (Element element : elements) {
                 NationData nationData = new NationData("", "");
                 Elements nationTitle = element.select("natnNm");
+                nationTitle = nationTitle.select("data");
                 nationData.natnNm = nationTitle.text();
 
-                Elements eles = element.select("poltcCntnt");
+                Elements eles = element.select("data");
                 for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    nationData.poltcCntnt += subNode.text();
+                    nationData.poltcCntnt += ele.text() + "\n";
                 }
                 SpannableString spanText = new SpannableString(Html.fromHtml(nationData.poltcCntnt, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
                 nationData.poltcCntnt = spanText.toString();

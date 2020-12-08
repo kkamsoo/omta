@@ -61,6 +61,7 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
             for (Element element : elements) {
                 SuccessData successData = new SuccessData("", ""); // 데이터 하나 생성
                 Elements newsTitle = element.select("titl"); // 타이틀 데이터 가져오기
+                newsTitle = newsTitle.select("data");
                 successData.titl = newsTitle.text();
 
                 Elements eles = element.select("bdtCntnt");

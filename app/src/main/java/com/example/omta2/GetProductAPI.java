@@ -62,6 +62,7 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
             for (Element element : elements) {
                 ProductData productData = new ProductData("", "");
                 Elements productTitle = element.select("titl");
+                productTitle = productTitle.select("data");
                 productData.titl = productTitle.text();
 
                 Elements eles = element.select("bdtCntnt");

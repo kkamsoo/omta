@@ -61,6 +61,7 @@ public class GetScamAPI extends AsyncTask<Integer, Void, String> {
             for (Element element : elements) {
                 ScamData scamData = new ScamData("", "");
                 Elements scamTitle = element.select("titl");
+                scamTitle = scamTitle.select("data");
                 scamData.titl = scamTitle.text();
 
                 Elements eles = element.select("bdtCntnt");
