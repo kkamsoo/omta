@@ -33,18 +33,25 @@ public class MainController extends AppCompatActivity {
     ListView listView;
     ListViewAdapter listAdapter;
 
+    // 비동기 통신 API 변수
+    GetNewsAPI newsAPI;
+    GetSuccessAPI successAPI;
+    GetScamAPI scamAPI;
+    GetNationAPI nationAPI;
+    GetProductAPI productAPI;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
         this.context = this;
 
-        // 비동기 통신
-        GetNewsAPI newsAPI = new GetNewsAPI("미국");
-        GetSuccessAPI successAPI = new GetSuccessAPI("미국");
-        GetScamAPI scamAPI = new GetScamAPI("미국");
-        GetNationAPI nationAPI = new GetNationAPI(context, "VN");
-        GetProductAPI productAPI = new GetProductAPI("미국");
+        // 비동기 통신 생성자
+        newsAPI = new GetNewsAPI(context, "미국", listAdapter);
+        successAPI = new GetSuccessAPI(context, "미국");
+        scamAPI = new GetScamAPI(context, "미국");
+        nationAPI = new GetNationAPI(context, "VN");
+        productAPI = new GetProductAPI(context, "미국");
 
         // 백그라운드 실행
         newsAPI.execute();
@@ -60,7 +67,7 @@ public class MainController extends AppCompatActivity {
         // 뒤로가기 버튼 이벤트 처리
         backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> onBackPressed());
-        
+
         // 리스트뷰 생성
         listView = (ListView) findViewById(R.id.listView);
 
@@ -102,7 +109,6 @@ public class MainController extends AppCompatActivity {
                     runOnUiThread(() -> {
                         listAdapter.data = newsAPI.newsList;
                         listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 1) {
@@ -116,21 +122,18 @@ public class MainController extends AppCompatActivity {
                     runOnUiThread(() -> {
                         listAdapter.data = scamAPI.scamList;
                         listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 3) {
                     runOnUiThread(() -> {
                         listAdapter.data = nationAPI.nationList;
                         listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 4) {
                     runOnUiThread(() -> {
                         listAdapter.data = productAPI.productList;
                         listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
                     });
                 }
             }
@@ -169,16 +172,12 @@ public class MainController extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0) {
+                    // 백그라운드에서 실행되던 NewsAPI 종료
+                    newsAPI.cancel(false);
                     String nation = nationSpinner.getItemAtPosition(position).toString();
-                    GetNewsAPI newsAPI = new GetNewsAPI(nation);
-                    newsAPI.nation = nation;
+                    // 새로운 NewsAPI 호출
+                    GetNewsAPI newsAPI = new GetNewsAPI(context, nation, listAdapter);
                     newsAPI.execute();
-
-                    runOnUiThread(() -> {
-                        listAdapter.data = newsAPI.newsList;
-                        listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
-                    });
                 }
             }
 

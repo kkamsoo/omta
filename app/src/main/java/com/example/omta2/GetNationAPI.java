@@ -18,22 +18,31 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<NationData> nationList = new ArrayList<>();
     String nation;
     Context context;
-    ProgressDialog dialog;
+    ProgressDialog progDailog;
 
+    ListViewAdapter listAdapter;
+
+    // Select메뉴 생성자
     public GetNationAPI(Context context, String nation) {
         this.context = context;
         this.nation = nation;
     }
-/*
+
+    public GetNationAPI(Context context, String nation, ListViewAdapter listAdapter) {
+        this.context = context;
+        this.nation = nation;
+        this.listAdapter = listAdapter;
+    }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        dialog = new ProgressDialog(context);
-        dialog.setMessage("로딩중입니다...");
-        dialog.setCancelable(false);
-        dialog.show();
+        progDailog = new ProgressDialog(context);
+        progDailog.setMessage("Loading");
+        progDailog.setCancelable(false);
+        progDailog.show();
     }
-*/
+
     @Override
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
@@ -64,10 +73,14 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
 
         return null;
     }
-/*
+
     @Override
-    protected void onPostExecute(String s) {
-        super.onPostExecute(s);
-        dialog.dismiss();
-    }*/
+    protected void onPostExecute(String result) {
+        // 리스트어댑터가 있을때만 리스트 실시간 업데이트
+        if(listAdapter != null) {
+            listAdapter.data = nationList;
+            listAdapter.notifyDataSetChanged();
+        }
+        progDailog.cancel();
+    }
 }

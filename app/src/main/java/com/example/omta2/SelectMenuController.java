@@ -26,11 +26,11 @@ public class SelectMenuController extends AppCompatActivity {
         Button exitButton = (Button) findViewById(R.id.exit);
 
         // 비동기로 데이터 받아오기
-        GetNewsAPI newsAPI = new GetNewsAPI("미국");
-        GetSuccessAPI successAPI = new GetSuccessAPI("미국");
-        GetScamAPI scamAPI = new GetScamAPI("미국");
+        GetNewsAPI newsAPI = new GetNewsAPI(this, "미국");
+        GetSuccessAPI successAPI = new GetSuccessAPI(this, "미국");
+        GetScamAPI scamAPI = new GetScamAPI(this, "미국");
         GetNationAPI nationAPI = new GetNationAPI(this, "미국");
-        GetProductAPI productAPI = new GetProductAPI("미국");
+        GetProductAPI productAPI = new GetProductAPI(this, "미국");
 
         // 백그라운드 실행
         newsAPI.execute();
@@ -45,6 +45,7 @@ public class SelectMenuController extends AppCompatActivity {
             intent.putExtra("menuTitle", "해외 시장 뉴스");
             intent.putExtra("TabIndex", 0);
             startActivity(intent);
+            newsAPI.cancel(false);
         });
 
         successButton.setOnClickListener(view -> {
@@ -53,6 +54,7 @@ public class SelectMenuController extends AppCompatActivity {
             intent.putExtra("menuTitle", "기업 성공 사례");
             intent.putExtra("TabIndex", 1);
             startActivity(intent);
+            successAPI.cancel(false);
         });
 
         scamButton.setOnClickListener(view -> {
@@ -61,6 +63,7 @@ public class SelectMenuController extends AppCompatActivity {
             intent.putExtra("menuTitle", "무역 사기 사례");
             intent.putExtra("TabIndex", 2);
             startActivity(intent);
+            scamAPI.cancel(false);
         });
 
         nationButton.setOnClickListener(view -> {
@@ -69,6 +72,7 @@ public class SelectMenuController extends AppCompatActivity {
             intent.putExtra("menuTitle", "국가 정보");
             intent.putExtra("TabIndex", 3);
             startActivity(intent);
+            nationAPI.cancel(false);
         });
 
         productButton.setOnClickListener(view -> {
@@ -77,7 +81,9 @@ public class SelectMenuController extends AppCompatActivity {
             intent.putExtra("menuTitle", "상품 DB");
             intent.putExtra("TabIndex", 4);
             startActivity(intent);
+            productAPI.cancel(false);
         });
+
         exitButton.setOnClickListener(view -> new AlertDialog.Builder(SelectMenuController.this)
                 .setTitle("Application 종료")
                 .setMessage("어플리케이션을 종료하시겠습니까?")

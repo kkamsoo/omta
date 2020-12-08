@@ -1,5 +1,7 @@
 package com.example.omta2;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.text.SpannableString;
@@ -12,16 +14,37 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 
-public class GetScamAPI extends AsyncTask<Integer, Void, Void> {
+public class GetScamAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<ScamData> scamList = new ArrayList<>();
     String nation;
+    Context context;
+    ProgressDialog progDailog;
 
-    public GetScamAPI(String nation) {
+    ListViewAdapter listAdapter;
+
+    // Select메뉴 생성자
+    public GetScamAPI(Context context, String nation) {
+        this.context = context;
         this.nation = nation;
     }
 
+    public GetScamAPI(Context context, String nation, ListViewAdapter listAdapter) {
+        this.nation = nation;
+        this.context = context;
+        this.listAdapter = listAdapter;
+    }
+
     @Override
-    protected Void doInBackground(Integer... integers) {
+    protected void onPreExecute() {
+        super.onPreExecute();
+        progDailog = new ProgressDialog(context);
+        progDailog.setMessage("Loading");
+        progDailog.setCancelable(false);
+        progDailog.show();
+    }
+
+    @Override
+    protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
         String queryUrl = "http://apis.data.go.kr/B410001/cmmrcFraudCaseService/cmmrcFraudCase?ServiceKey=" + key + "&type=xml&numOfRows=5&search1=" + nation;
 
@@ -49,5 +72,14 @@ public class GetScamAPI extends AsyncTask<Integer, Void, Void> {
         }
 
         return null;
+    }
+    @Override
+    protected void onPostExecute(String result) {
+        // 리스트어댑터가 있을때만 리스트 실시간 업데이트
+        if(listAdapter != null) {
+            listAdapter.data = scamList;
+            listAdapter.notifyDataSetChanged();
+        }
+        progDailog.cancel();
     }
 }
