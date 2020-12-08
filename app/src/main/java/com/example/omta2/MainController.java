@@ -37,6 +37,7 @@ public class MainController extends AppCompatActivity {
 
     ListView listView;
     ListViewAdapter listAdapter;
+    ArrayAdapter nationAdapter;
 
     // 비동기 통신 API 변수
     GetNewsAPI newsAPI;
@@ -71,6 +72,40 @@ public class MainController extends AppCompatActivity {
         TextView menuTitle = (TextView) findViewById(R.id.menutitle);
         menuTitle.setText(getIntent().getStringExtra("menuTitle"));
 
+        // 리스트뷰 생성
+        listView = (ListView) findViewById(R.id.listView);
+
+        // 초기값 설정
+        if(menuTitle.getText().equals("해외 시장 뉴스")) {
+            listAdapter = new ListViewAdapter(context, newsAPI.newsList);
+            newsAPI.listAdapter = listAdapter;
+            listAdapter.notifyDataSetChanged();
+            listView.setAdapter(listAdapter);
+        }
+        else if(menuTitle.getText().equals("기업 성공 사례")) {
+            listAdapter = new ListViewAdapter(context, successAPI.successList);
+            successAPI.listAdapter = listAdapter;
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+        }
+        else if(menuTitle.getText().equals("국가 정보")) {
+            listAdapter = new ListViewAdapter(context, nationAPI.nationList);
+            nationAPI.listAdapter = listAdapter;
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+        }
+        else if(menuTitle.getText().equals("무역 사기 사례")) {
+            listAdapter = new ListViewAdapter(context, scamAPI.scamList);
+            scamAPI.listAdapter = listAdapter;
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+        }
+        else if(menuTitle.getText().equals("상품 DB")) {
+            listAdapter = new ListViewAdapter(context, productAPI.productList);
+            productAPI.listAdapter = listAdapter;
+            listView.setAdapter(listAdapter);
+            listAdapter.notifyDataSetChanged();
+        }
         // 뒤로가기 버튼 이벤트 처리
         backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> onBackPressed());
@@ -78,6 +113,7 @@ public class MainController extends AppCompatActivity {
         // 스피너
         nationSpinner = findViewById(R.id.nationspinner);
 
+        // 제목, 날짜입력 텍스트 이벤트 처리
         EditText titleText = (EditText)findViewById(R.id.titletext);
         EditText dateText = (EditText)findViewById(R.id.datetext);
 
@@ -96,7 +132,7 @@ public class MainController extends AppCompatActivity {
                 }
 
                 String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                subSelect(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+                getAPI(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
 
                 return true;
             }
@@ -116,45 +152,23 @@ public class MainController extends AppCompatActivity {
                     return true;
                 }
                 String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                subSelect(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+                getAPI(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
 
                 return true;
             }
         });
 
-        listView = (ListView) findViewById(R.id.listView);
-
-        // 카테고리별 데이터리스트 초기값 설정
-        newsDataList = (ArrayList<NewsData>) getIntent().getSerializableExtra("NewsList");
-        successDataList = (ArrayList<SuccessData>) getIntent().getSerializableExtra("SuccessList");
-        nationDataList = (ArrayList<NationData>) getIntent().getSerializableExtra("NationList");
-        scamDataList = (ArrayList<ScamData>) getIntent().getSerializableExtra("ScamList");
-        productDataList = (ArrayList<ProductData>) getIntent().getSerializableExtra("ProductList");
-
-        if(menuTitle.getText().equals("해외 시장 뉴스")) {
-            listAdapter = new ListViewAdapter(context, newsDataList);
-            listView.setAdapter(listAdapter);
-        }
-        else if(menuTitle.getText().equals("기업 성공 사례")) {
-            listAdapter = new ListViewAdapter(context, successDataList);
-            listView.setAdapter(listAdapter);
-        }
-        else if(menuTitle.getText().equals("국가 정보")) {
-            listAdapter = new ListViewAdapter(context, nationDataList);
-            listView.setAdapter(listAdapter);
-        }
-        else if(menuTitle.getText().equals("무역 사기 사례")) {
-            listAdapter = new ListViewAdapter(context, scamDataList);
-            listView.setAdapter(listAdapter);
-        }
-        else if(menuTitle.getText().equals("상품 DB")) {
-            listAdapter = new ListViewAdapter(context, productDataList);
-            listView.setAdapter(listAdapter);
-        }
         // 탭 이벤트 처리
         TabLayout tabLayout = findViewById(R.id.tablayout);
         int tabIndex = getIntent().getIntExtra("TabIndex", 0); // 탭 인덱스 가져오기
         tabLayout.getTabAt(tabIndex).select();
+        // 국가 정보일 경우 englishNations 사용
+        if(tabIndex == 3) {
+            nationAdapter = ArrayAdapter.createFromResource(context, R.array.englishNations, R.layout.spinner_layout);
+        }
+        else {
+            nationAdapter = ArrayAdapter.createFromResource(context, R.array.nations, R.layout.spinner_layout);
+        }
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -192,6 +206,7 @@ public class MainController extends AppCompatActivity {
                     });
                 }
                 else if(tab.getPosition() == 3) {
+                    nationAdapter = ArrayAdapter.createFromResource(context, R.array.englishNations, R.layout.spinner_layout);
                     runOnUiThread(() -> {
                         menuTitle.setText("국가 정보");
                         // 스피너 초기값 설정
@@ -225,17 +240,8 @@ public class MainController extends AppCompatActivity {
         });
 
         // 국가 선택 스피너 어댑터
-        ArrayAdapter nationAdapter = ArrayAdapter.createFromResource(this, R.array.nations, R.layout.spinner_layout);
         nationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         nationSpinner.setAdapter(nationAdapter);
-        // 산업분류 선택 스피너 어댑터
-        /*ArrayAdapter industryAdapter = ArrayAdapter.createFromResource(this, R.array.industrys, R.layout.spinner_layout);
-        industryAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        industrySpinner.setAdapter(industryAdapter);
-         무역관 선택 스피너 어댑터
-        ArrayAdapter tradeAdapter = ArrayAdapter.createFromResource(this, R.array.trades, R.layout.spinner_layout);
-        tradeAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        tradeSpinner.setAdapter(tradeAdapter);*/
 
         nationSpinner.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         titleText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -247,7 +253,7 @@ public class MainController extends AppCompatActivity {
                 if(position > 0) {
                     nationPosition = position;
                     String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                    subSelect(menuTitle.getText().toString(), nation, "", "", position);
+                    getAPI(menuTitle.getText().toString(), nation, "", "", position);
                 }
             }
 
@@ -289,8 +295,8 @@ public class MainController extends AppCompatActivity {
             }
         });
     }
-    // 스피너 선택 메소드
-    public void subSelect(String apiName, String nation, String title, String date, int position) {
+    // API 호출 메소드
+    public void getAPI(String apiName, String nation, String title, String date, int position) {
         // 해외 시장뉴스 
         if(apiName.equals("해외 시장 뉴스") && position > 0) {
             // 백그라운드에서 실행되던 NewsAPI 종료

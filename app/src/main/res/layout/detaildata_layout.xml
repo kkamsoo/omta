@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
-        android:baselineAligned="false">
+        android:fillViewport="true">
         <TextView
             android:id="@+id/detailcontent"
             android:layout_width="match_parent"
