@@ -51,7 +51,7 @@ public class GetScamAPI extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
         String queryUrl = "http://apis.data.go.kr/B410001/cmmrcFraudCaseService/cmmrcFraudCase?ServiceKey="
-                + key + "&type=xml&numOfRows=5&search=" + nation + "&search1=" + title + "&search4=" + date;
+                + key + "&type=xml&numOfRows=5&search3=" + nation + "&search1=" + title + "&search4=" + date;
 
         try {
             Connection conn = Jsoup.connect(queryUrl);
