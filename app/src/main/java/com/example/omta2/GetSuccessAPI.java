@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<SuccessData> successList = new ArrayList<>();
-    String nation;
     Context context;
     ProgressDialog progDailog;
-
     ListViewAdapter listAdapter;
+
+    String nation;
+    String title;
+    String date;
 
     // Select메뉴 생성자
     public GetSuccessAPI(Context context, String nation) {
@@ -28,10 +30,12 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
         this.nation = nation;
     }
 
-    public GetSuccessAPI(Context context, String nation, ListViewAdapter listAdapter) {
+    public GetSuccessAPI(Context context, ListViewAdapter listAdapter, String nation, String title, String date) {
         this.context = context;
-        this.nation = nation;
         this.listAdapter = listAdapter;
+        this.nation = nation;
+        this.title = title;
+        this.date = date;
     }
 
     @Override
@@ -46,7 +50,8 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
     @Override
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
-        String queryUrl = "http://apis.data.go.kr/B410001/compSucsCaseService/compSucsCase?ServiceKey=" + key + "&type=xml&numOfRows=5&search1=" + nation;
+        String queryUrl = "http://apis.data.go.kr/B410001/compSucsCaseService/compSucsCase?ServiceKey="
+                + key + "&type=xml&numOfRows=5&search1=" + title + "&search3=" + nation + "&search4=" + date;
 
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다

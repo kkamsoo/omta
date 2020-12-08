@@ -82,22 +82,26 @@
             android:entries="@array/nations"
             android:dropDownWidth="200dp"
             android:spinnerMode="dropdown" />
-        <Spinner
-            android:id="@+id/industryspinner"
-            android:entries="@array/industrys"
+        <EditText
+            android:id="@+id/titletext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:dropDownWidth="200dp"
-            android:spinnerMode="dropdown" />
-        <Spinner
-            android:id="@+id/tradespinner"
-            android:entries="@array/trades"
+            android:hint="제목 입력"
+            android:textSize="15dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:maxLines="1"/>
+        <EditText
+            android:id="@+id/datetext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:dropDownWidth="200dp"
-            android:spinnerMode="dropdown" />
+            android:hint="날짜 입력"
+            android:textSize="15dp"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
+            android:maxLines="1"/>
     </LinearLayout>
 
     <ListView

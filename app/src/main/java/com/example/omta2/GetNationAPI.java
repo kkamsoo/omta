@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class GetNationAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<NationData> nationList = new ArrayList<>();
-    String nation;
     Context context;
     ProgressDialog progDailog;
-
     ListViewAdapter listAdapter;
+
+    String nation;
 
     // Select메뉴 생성자
     public GetNationAPI(Context context, String nation) {
@@ -28,10 +28,10 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
         this.nation = nation;
     }
 
-    public GetNationAPI(Context context, String nation, ListViewAdapter listAdapter) {
+    public GetNationAPI(Context context, ListViewAdapter listAdapter, String nation) {
         this.context = context;
-        this.nation = nation;
         this.listAdapter = listAdapter;
+        this.nation = nation;
     }
 
     @Override

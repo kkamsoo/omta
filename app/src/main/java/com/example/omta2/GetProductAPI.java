@@ -16,11 +16,13 @@ import java.util.ArrayList;
 
 public class GetProductAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<ProductData> productList = new ArrayList<>();
-    String nation;
     Context context;
     ProgressDialog progDailog;
-
     ListViewAdapter listAdapter;
+
+    String nation;
+    String title;
+    String date;
 
     // Select메뉴 생성자
     public GetProductAPI(Context context, String nation) {
@@ -29,10 +31,12 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
     }
 
     // Main컨트롤러 생성자
-    public GetProductAPI(Context context, String nation, ListViewAdapter listAdapter) {
+    public GetProductAPI(Context context, ListViewAdapter listAdapter, String nation, String title, String date) {
         this.context = context;
-        this.nation = nation;
         this.listAdapter = listAdapter;
+        this.nation = nation;
+        this.title = title;
+        this.date = date;
     }
     
     @Override
@@ -47,7 +51,8 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
     @Override
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
-        String queryUrl = "http://apis.data.go.kr/B410001/cmmdtDbService/cmmdtDb?ServiceKey=" + key + "&type=xml&numOfRows=5&search1=" + nation;
+        String queryUrl = "http://apis.data.go.kr/B410001/cmmdtDbService/cmmdtDb?ServiceKey="
+                + key + "&type=xml&numOfRows=5&search1=" + nation + "&search2=" + title + "&search4=" + date;
 
         try {
             Connection conn = Jsoup.connect(queryUrl);
@@ -59,7 +64,7 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
                 Elements productTitle = element.select("titl");
                 productData.titl = productTitle.text();
 
-                Elements eles = element.select("cmdltNmKorn");
+                Elements eles = element.select("bdtCntnt");
                 for (Element ele : eles) {
                     Elements subNode = ele.select("data");
                     productData.bdtCntnt += subNode.text();
