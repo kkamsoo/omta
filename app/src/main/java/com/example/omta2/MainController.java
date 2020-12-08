@@ -160,7 +160,7 @@ public class MainController extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0) {
                     runOnUiThread(() -> {
-                        menuTitle.setText("기업 성공 사례"); // 메뉴타이틀 설정
+                        menuTitle.setText("해외 시장 뉴스"); // 메뉴타이틀 설정
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");

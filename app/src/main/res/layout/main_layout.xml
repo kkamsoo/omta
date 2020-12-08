@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    android:background="@drawable/background2">
+    android:background="#FFFFFF">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:id="@+id/tablayout"
             android:theme="@style/TabTheme">
             <com.google.android.material.tabs.TabItem
-                android:text="해외시장"
+                android:text="해외뉴스"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <com.google.android.material.tabs.TabItem

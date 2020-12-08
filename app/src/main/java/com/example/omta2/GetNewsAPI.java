@@ -21,9 +21,9 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
     ProgressDialog progDailog;
     ListViewAdapter listAdapter;
 
-    String nation;
-    String title;
-    String date;
+    String nation = "";
+    String title = "";
+    String date = "";
 
     // Select메뉴 생성자
     public GetNewsAPI(Context context, String nation) {
@@ -44,7 +44,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         progDailog = new ProgressDialog(context);
-        progDailog.setMessage("Loading");
+        progDailog.setMessage("API로부터 데이터를 받는 중입니다..");
         progDailog.setCancelable(false);
         progDailog.show();
     }
@@ -61,16 +61,25 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
             Elements elements = doc.select("item");
 
             for (Element element : elements) {
-                NewsData newsData = new NewsData("", ""); // 뉴스 데이터 하나 생성
+                NewsData newsData = new NewsData("", "", ""); // 뉴스 데이터 하나 생성
                 Elements newsTitle = element.select("newsTitl"); // 뉴스타이틀 데이터 가져오기
+                newsTitle = newsTitle.select("data");
                 newsData.newsTitl = newsTitle.text();
 
-                Elements eles = element.select("cntntSumar"); // 뉴스요약 데이터 가져오기
+                Elements eles = element.select("newsBdt"); // 뉴스요약 데이터 가져오기
                 for (Element ele : eles) {
+                    Elements subNode = ele.select("data");
+                    newsData.newsBdt += subNode.text();
+                }
+                SpannableString spanText = new SpannableString(Html.fromHtml(newsData.newsBdt, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
+                newsData.newsBdt = spanText.toString(); // 삭제하고 남은 스트링데이터
+
+                Elements eles2 = element.select("cntntSumar"); // 뉴스요약 데이터 가져오기
+                for (Element ele : eles2) {
                     Elements subNode = ele.select("data");
                     newsData.cntntSumar += subNode.text();
                 }
-                SpannableString spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
+                spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
                 newsData.cntntSumar = spanText.toString(); // 삭제하고 남은 스트링데이터
                 newsList.add(newsData); // 최종 뉴스데이터를 뉴스 리스트에 추가
             }

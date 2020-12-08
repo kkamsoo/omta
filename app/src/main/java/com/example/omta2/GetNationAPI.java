@@ -20,7 +20,7 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
     ProgressDialog progDailog;
     ListViewAdapter listAdapter;
 
-    String nation;
+    String nation = "";;
 
     // Select메뉴 생성자
     public GetNationAPI(Context context, String nation) {
@@ -38,7 +38,7 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         progDailog = new ProgressDialog(context);
-        progDailog.setMessage("Loading");
+        progDailog.setMessage("API로부터 데이터를 받는 중입니다..");
         progDailog.setCancelable(false);
         progDailog.show();
     }

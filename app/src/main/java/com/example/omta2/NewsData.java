@@ -17,8 +17,9 @@ public class NewsData implements Serializable {
     public String newsBdt; // 뉴스 본문
     public String cntntSumar; // 뉴스 요약
 
-    public NewsData(String newsTitl, String cntntSumar){
+    public NewsData(String newsTitl, String newsBdt, String cntntSumar){
         this.newsTitl = newsTitl;
+        this.newsBdt = newsBdt;
         this.cntntSumar = cntntSumar;
     }
 

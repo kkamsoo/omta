@@ -29,7 +29,7 @@ public class ListDetailController extends AppCompatActivity {
         if(category.equals("해외 시장 뉴스")) {
             NewsData data = (NewsData) getIntent().getSerializableExtra("item");
             title = data.getNewsTitl();
-            content = data.getCntntSumar();
+            content = data.getNewsBdt();
         }
         else if(category.equals("기업 성공 사례")) {
             SuccessData data = (SuccessData) getIntent().getSerializableExtra("item");
