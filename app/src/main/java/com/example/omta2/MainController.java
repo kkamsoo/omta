@@ -68,6 +68,11 @@ public class MainController extends AppCompatActivity {
         backButton = findViewById(R.id.backbutton);
         backButton.setOnClickListener(v -> onBackPressed());
 
+        // 스피너
+        nationSpinner = findViewById(R.id.nationspinner);
+        industrySpinner = findViewById(R.id.industryspinner);
+        tradeSpinner = findViewById(R.id.tradespinner);
+
         // 리스트뷰 생성
         listView = (ListView) findViewById(R.id.listView);
 
@@ -107,31 +112,55 @@ public class MainController extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0) {
                     runOnUiThread(() -> {
+                        menuTitle.setText("기업 성공 사례"); // 메뉴타이틀 설정
+                        // 스피너 초기값 설정
+                        nationSpinner.setSelection(0);
+                        industrySpinner.setSelection(0);
+                        tradeSpinner.setSelection(0);
                         listAdapter.data = newsAPI.newsList;
                         listAdapter.notifyDataSetChanged();
                     });
                 }
                 else if(tab.getPosition() == 1) {
                     runOnUiThread(() -> {
+                        menuTitle.setText("기업 성공 사례");
+                        // 스피너 초기값 설정
+                        nationSpinner.setSelection(0);
+                        industrySpinner.setSelection(0);
+                        tradeSpinner.setSelection(0);
                         listAdapter.data = successAPI.successList;
                         listAdapter.notifyDataSetChanged();
-                        listView.setAdapter(listAdapter);
                     });
                 }
                 else if(tab.getPosition() == 2) {
                     runOnUiThread(() -> {
+                        menuTitle.setText("무역 사기 사례");
+                        // 스피너 초기값 설정
+                        nationSpinner.setSelection(0);
+                        industrySpinner.setSelection(0);
+                        tradeSpinner.setSelection(0);
                         listAdapter.data = scamAPI.scamList;
                         listAdapter.notifyDataSetChanged();
                     });
                 }
                 else if(tab.getPosition() == 3) {
                     runOnUiThread(() -> {
+                        menuTitle.setText("국가 정보");
+                        // 스피너 초기값 설정
+                        nationSpinner.setSelection(0);
+                        industrySpinner.setSelection(0);
+                        tradeSpinner.setSelection(0);
                         listAdapter.data = nationAPI.nationList;
                         listAdapter.notifyDataSetChanged();
                     });
                 }
                 else if(tab.getPosition() == 4) {
                     runOnUiThread(() -> {
+                        menuTitle.setText("상품 DB");
+                        // 스피너 초기값 설정
+                        nationSpinner.setSelection(0);
+                        industrySpinner.setSelection(0);
+                        tradeSpinner.setSelection(0);
                         listAdapter.data = productAPI.productList;
                         listAdapter.notifyDataSetChanged();
                     });
@@ -146,10 +175,6 @@ public class MainController extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        // 스피너 이벤트 처리
-        nationSpinner = findViewById(R.id.nationspinner);
-        industrySpinner = findViewById(R.id.industryspinner);
-        tradeSpinner = findViewById(R.id.tradespinner);
 
         // 국가 선택 스피너 어댑터
         ArrayAdapter nationAdapter = ArrayAdapter.createFromResource(this, R.array.nations, R.layout.spinner_layout);
@@ -172,12 +197,12 @@ public class MainController extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position > 0) {
-                    // 백그라운드에서 실행되던 NewsAPI 종료
-                    newsAPI.cancel(false);
                     String nation = nationSpinner.getItemAtPosition(position).toString();
-                    // 새로운 NewsAPI 호출
-                    GetNewsAPI newsAPI = new GetNewsAPI(context, nation, listAdapter);
-                    newsAPI.execute();
+                    String industry = industrySpinner.getItemAtPosition(position).toString();
+                    String trade = tradeSpinner.getItemAtPosition(position).toString();
+
+                    System.out.println("메뉴타이틀:" + menuTitle.getText().toString());
+                    spinnerSelect(menuTitle.getText().toString(), nation, industry, trade, position);
                 }
             }
 
@@ -218,5 +243,39 @@ public class MainController extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    public void spinnerSelect(String apiName, String nation, String industry, String trade, int position) {
+        // 해외 시장뉴스 
+        if(apiName.equals("해외 시장 뉴스") && position > 0) {
+            // 백그라운드에서 실행되던 NewsAPI 종료
+            newsAPI.cancel(false);
+            // 새로운 NewsAPI 호출
+            GetNewsAPI newsAPI = new GetNewsAPI(context, nation, listAdapter);
+            newsAPI.execute();
+        }
+        // 성공사례
+        else if(apiName.equals("기업 성공 사례") && position > 0) {
+            successAPI.cancel(false);
+            GetSuccessAPI successAPI = new GetSuccessAPI(context, nation, listAdapter);
+            successAPI.execute();
+        }
+        // 국가 정보
+        else if(apiName.equals("국가 정보") && position > 0) {
+            nationAPI.cancel(false);
+            GetNationAPI nationAPI = new GetNationAPI(context, nation, listAdapter);
+            nationAPI.execute();
+        }
+        // 무역 사기
+        else if(apiName.equals("무역 사기 사례") && position > 0) {
+            scamAPI.cancel(false);
+            GetScamAPI scamAPI = new GetScamAPI(context, nation, listAdapter);
+            scamAPI.execute();
+        }
+        // 상품 DB
+        else if(apiName.equals("상품 DB") && position > 0) {
+            productAPI.cancel(false);
+            GetProductAPI productAPI = new GetProductAPI(context, nation, listAdapter);
+            productAPI.execute();
+        }
     }
 }
