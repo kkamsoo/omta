@@ -23,7 +23,8 @@ public class ListDetailController extends AppCompatActivity {
 
         detailTitle = findViewById(R.id.detailtitle);
         detailContent = findViewById(R.id.detailcontent);
-
+        detailContent.setMovementMethod(new ScrollingMovementMethod());
+        
         String category = getIntent().getStringExtra("category");
 
         if(category.equals("해외 시장 뉴스")) {
@@ -39,7 +40,7 @@ public class ListDetailController extends AppCompatActivity {
         else if(category.equals("국가 정보")) {
             NationData data = (NationData) getIntent().getSerializableExtra("item");
             title = data.getNatnNm();
-            content = data.getPoltcCntnt();
+            content = data.getContent();
         }
         else if(category.equals("무역 사기 사례")) {
             ScamData data = (ScamData) getIntent().getSerializableExtra("item");

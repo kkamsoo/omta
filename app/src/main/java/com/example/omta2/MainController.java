@@ -253,7 +253,8 @@ public class MainController extends AppCompatActivity {
                 if(position > 0) {
                     nationPosition = position;
                     String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                    getAPI(menuTitle.getText().toString(), nation, "", "", position);
+                    String subString = nation.substring(nation.length()-3, nation.length()-1);
+                    getAPI(menuTitle.getText().toString(), subString, "", "", position);
                 }
             }
 

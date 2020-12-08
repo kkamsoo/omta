@@ -54,17 +54,27 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
             Elements elements = doc.select("item");
 
             for (Element element : elements) {
-                NationData nationData = new NationData("", "");
+                NationData nationData = new NationData("", "", "");
+
+                // 제목 데이터
                 Elements nationTitle = element.select("natnNm");
                 nationTitle = nationTitle.select("data");
                 nationData.natnNm = nationTitle.text();
 
+                // 요약 데이터
+                Elements nationSummary = element.select("clturCntnt");
+                nationSummary = nationSummary.select("data");
+                nationData.clturCntnt= nationSummary.text();
+
+                // 전체 데이터
                 Elements eles = element.select("data");
-                for (Element ele : eles) {
-                    nationData.poltcCntnt += ele.text() + "\n";
+                // 제목 다음부터 파싱
+                for (int i = 1; i < eles.size(); i++) {
+                    nationData.content += eles.get(i).text() + "<br /><br />"; // 줄바꿈
                 }
-                SpannableString spanText = new SpannableString(Html.fromHtml(nationData.poltcCntnt, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
-                nationData.poltcCntnt = spanText.toString();
+                nationData.content += "<br /><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                SpannableString spanText = new SpannableString(Html.fromHtml(nationData.content, Html.FROM_HTML_MODE_COMPACT));
+                nationData.content = spanText.toString();
                 nationList.add(nationData);
             }
         } catch (Throwable e) {

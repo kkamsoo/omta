@@ -59,7 +59,7 @@ public class ListViewAdapter<T> extends BaseAdapter {
         else if(data.get(0).getClass().getSimpleName().equals("NationData")) {
             ArrayList<NationData> nationData = (ArrayList<NationData>) data;
             objectTitle.setText(nationData.get(position).getNatnNm());
-            objectSummary.setText(nationData.get(position).getPoltcCntnt());
+            objectSummary.setText(nationData.get(position).getClturCntnt());
         }
 
         else if(data.get(0).getClass().getSimpleName().equals("ScamData")) {

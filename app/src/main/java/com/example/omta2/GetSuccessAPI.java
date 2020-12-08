@@ -69,9 +69,10 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
                     Elements subNode = ele.select("data");
                     successData.bdtCntnt += subNode.text();
                 }
-                SpannableString spanText = new SpannableString(Html.fromHtml(successData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT)); // 필요없는 태그 데이터를 삭제해준다.
-                successData.bdtCntnt = spanText.toString(); // 삭제하고 남은 스트링데이터
-                successList.add(successData); // 최종 데이터
+                successData.bdtCntnt += "<br /><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                SpannableString spanText = new SpannableString(Html.fromHtml(successData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
+                successData.bdtCntnt = spanText.toString();
+                successList.add(successData);
             }
         } catch (Throwable e) {
             e.printStackTrace();

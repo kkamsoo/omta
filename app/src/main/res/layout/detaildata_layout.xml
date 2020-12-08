@@ -21,8 +21,8 @@
             android:id="@+id/detailtitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"
-            android:layout_marginRight="40dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="20dp"
             android:text="제목"
@@ -34,13 +34,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
-        android:fillViewport="true">
+        android:layout_marginRight="10dp"
+        android:scrollbars="vertical"
+        android:fillViewport="true"
+        android:scrollbarThumbVertical="@color/grey">
         <TextView
             android:id="@+id/detailcontent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
-            android:textColor="@color/black" />
+            android:layout_margin="25dp"
+            android:textColor="@color/black"
+            />
     </ScrollView>
 
 </LinearLayout>
