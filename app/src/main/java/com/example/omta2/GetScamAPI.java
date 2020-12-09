@@ -56,23 +56,31 @@ public class GetScamAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl);
             Document doc = conn.get();
-            Elements elements = doc.select("item");
-
-            for (Element element : elements) {
+            Elements elements = doc.select("resultMsg");
+            // 데이터를 받지 못한경우
+            if(elements.text().equals("NODATA_ERROR")) {
                 ScamData scamData = new ScamData("", "");
-                Elements scamTitle = element.select("titl");
-                scamTitle = scamTitle.select("data");
-                scamData.titl = scamTitle.text();
-
-                Elements eles = element.select("bdtCntnt");
-                for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    scamData.bdtCntnt += subNode.text();
-                }
-                scamData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                SpannableString spanText = new SpannableString(Html.fromHtml(scamData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
-                scamData.bdtCntnt = spanText.toString();
+                scamData.setTitl("API로부터 데이터를 받지 못하였습니다.");
                 scamList.add(scamData);
+            }
+            else {
+                elements = doc.select("item");
+                for (Element element : elements) {
+                    ScamData scamData = new ScamData("", "");
+                    Elements scamTitle = element.select("titl");
+                    scamTitle = scamTitle.select("data");
+                    scamData.titl = scamTitle.text();
+
+                    Elements eles = element.select("bdtCntnt");
+                    for (Element ele : eles) {
+                        Elements subNode = ele.select("data");
+                        scamData.bdtCntnt += subNode.text();
+                    }
+                    scamData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                    SpannableString spanText = new SpannableString(Html.fromHtml(scamData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
+                    scamData.bdtCntnt = spanText.toString();
+                    scamList.add(scamData);
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();

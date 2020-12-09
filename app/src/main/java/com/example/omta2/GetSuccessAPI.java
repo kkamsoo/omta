@@ -56,23 +56,31 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
             Document doc = conn.get();
-            Elements elements = doc.select("item");
-
-            for (Element element : elements) {
-                SuccessData successData = new SuccessData("", ""); // 데이터 하나 생성
-                Elements newsTitle = element.select("titl"); // 타이틀 데이터 가져오기
-                newsTitle = newsTitle.select("data");
-                successData.titl = newsTitle.text();
-
-                Elements eles = element.select("bdtCntnt");
-                for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    successData.bdtCntnt += subNode.text();
-                }
-                successData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                SpannableString spanText = new SpannableString(Html.fromHtml(successData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
-                successData.bdtCntnt = spanText.toString();
+            Elements elements = doc.select("resultMsg");
+            // 데이터를 받지 못한경우
+            if(elements.text().equals("NODATA_ERROR")) {
+                SuccessData successData = new SuccessData("", "");
+                successData.setTitl("API로부터 데이터를 받지 못하였습니다.");
                 successList.add(successData);
+            }
+            else {
+                elements = doc.select("item");
+                for (Element element : elements) {
+                    SuccessData successData = new SuccessData("", ""); // 데이터 하나 생성
+                    Elements newsTitle = element.select("titl"); // 타이틀 데이터 가져오기
+                    newsTitle = newsTitle.select("data");
+                    successData.titl = newsTitle.text();
+
+                    Elements eles = element.select("bdtCntnt");
+                    for (Element ele : eles) {
+                        Elements subNode = ele.select("data");
+                        successData.bdtCntnt += subNode.text();
+                    }
+                    successData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                    SpannableString spanText = new SpannableString(Html.fromHtml(successData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
+                    successData.bdtCntnt = spanText.toString();
+                    successList.add(successData);
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();

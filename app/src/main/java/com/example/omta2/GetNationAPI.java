@@ -51,31 +51,40 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
             Document doc = conn.get();
-            Elements elements = doc.select("item");
-
-            for (Element element : elements) {
+            Elements elements = doc.select("resultMsg");
+            // 데이터를 받지 못한경우
+            if(elements.text().equals("NODATA_ERROR")) {
                 NationData nationData = new NationData("", "", "");
-
-                // 제목 데이터
-                Elements nationTitle = element.select("natnNm");
-                nationTitle = nationTitle.select("data");
-                nationData.natnNm = nationTitle.text();
-
-                // 요약 데이터
-                Elements nationSummary = element.select("clturCntnt");
-                nationSummary = nationSummary.select("data");
-                nationData.clturCntnt= nationSummary.text();
-
-                // 전체 데이터
-                Elements eles = element.select("data");
-                // 제목 다음부터 파싱
-                for (int i = 1; i < eles.size(); i++) {
-                    nationData.content += eles.get(i).text() + "<br /><br />"; // 줄바꿈
-                }
-                nationData.content += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                SpannableString spanText = new SpannableString(Html.fromHtml(nationData.content, Html.FROM_HTML_MODE_COMPACT));
-                nationData.content = spanText.toString();
+                nationData.setNatnNm("API로부터 데이터를 받지 못하였습니다.");
                 nationList.add(nationData);
+            }
+            else {
+                elements = doc.select("item");
+
+                for (Element element : elements) {
+                    NationData nationData = new NationData("", "", "");
+
+                    // 제목 데이터
+                    Elements nationTitle = element.select("natnNm");
+                    nationTitle = nationTitle.select("data");
+                    nationData.natnNm = nationTitle.text();
+
+                    // 요약 데이터
+                    Elements nationSummary = element.select("clturCntnt");
+                    nationSummary = nationSummary.select("data");
+                    nationData.clturCntnt = nationSummary.text();
+
+                    // 전체 데이터
+                    Elements eles = element.select("data");
+                    // 제목 다음부터 파싱
+                    for (int i = 1; i < eles.size(); i++) {
+                        nationData.content += eles.get(i).text() + "<br /><br />"; // 줄바꿈
+                    }
+                    nationData.content += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                    SpannableString spanText = new SpannableString(Html.fromHtml(nationData.content, Html.FROM_HTML_MODE_COMPACT));
+                    nationData.content = spanText.toString();
+                    nationList.add(nationData);
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();

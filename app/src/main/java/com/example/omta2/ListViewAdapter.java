@@ -73,6 +73,7 @@ public class ListViewAdapter<T> extends BaseAdapter {
             objectTitle.setText(productData.get(position).getTitl());
             objectSummary.setText(productData.get(position).getBdtCntnt());
         }
+
         this.notifyDataSetChanged();
 
         return view;

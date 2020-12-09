@@ -57,23 +57,32 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl);
             Document doc = conn.get();
-            Elements elements = doc.select("item");
-
-            for (Element element : elements) {
+            Elements elements = doc.select("resultMsg");
+            // 데이터를 받지 못한경우
+            if(elements.text().equals("NODATA_ERROR")) {
                 ProductData productData = new ProductData("", "");
-                Elements productTitle = element.select("titl");
-                productTitle = productTitle.select("data");
-                productData.titl = productTitle.text();
-
-                Elements eles = element.select("bdtCntnt");
-                for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    productData.bdtCntnt += subNode.text();
-                }
-                productData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                SpannableString spanText = new SpannableString(Html.fromHtml(productData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
-                productData.bdtCntnt = spanText.toString();
+                productData.setTitl("API로부터 데이터를 받지 못하였습니다.");
                 productList.add(productData);
+            }
+            else {
+                elements = doc.select("item");
+
+                for (Element element : elements) {
+                    ProductData productData = new ProductData("", "");
+                    Elements productTitle = element.select("titl");
+                    productTitle = productTitle.select("data");
+                    productData.titl = productTitle.text();
+
+                    Elements eles = element.select("bdtCntnt");
+                    for (Element ele : eles) {
+                        Elements subNode = ele.select("data");
+                        productData.bdtCntnt += subNode.text();
+                    }
+                    productData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                    SpannableString spanText = new SpannableString(Html.fromHtml(productData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
+                    productData.bdtCntnt = spanText.toString();
+                    productList.add(productData);
+                }
             }
         } catch (Throwable e) {
             e.printStackTrace();

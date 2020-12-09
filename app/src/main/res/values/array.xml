@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="nations">
-        <item>국가선택</item>
+        <item>국가 선택</item>
         <item>과테말라</item>
         <item>기니</item>
         <item>나미비아</item>
@@ -168,7 +168,7 @@
         <item>기니(GN)</item>
         <item>나미비아(NA)</item>
         <item>나이지리아(NG)</item>
-        <item>남아프리카 공화국(ZA)</item>
+        <item>남아프리카공화국(ZA)</item>
         <item>네덜란드(NL)</item>
         <item>노르웨이(NO)</item>
         <item>뉴질랜드(NZ)</item>
@@ -176,7 +176,7 @@
         <item>대만(TW)</item>
         <item>대한민국(KR)</item>
         <item>덴마크(DK)</item>
-        <item>도미니카 공화국(DO)</item>
+        <item>도미니카공화국(DO)</item>
         <item>독일(DE)</item>
         <item>라오스(LA)</item>
         <item>라트비아(LV)</item>
@@ -190,7 +190,7 @@
         <item>리투아니아(LT)</item>
         <item>마다가스카르(MG)</item>
         <item>마카오(MO)</item>
-        <item>마케도니아 공화국(MK)</item>
+        <item>마케도니아공화국(MK)</item>
         <item>말라위(MW)</item>
         <item>말레이시아(MY)</item>
         <item>말리(ML)</item>
@@ -214,7 +214,7 @@
         <item>벨기에(BE)</item>
         <item>벨라루스(BY)</item>
         <item>벨리즈(BZ)</item>
-        <item>보스니아 헤르체고비나(BA)</item>
+        <item>보스니아헤르체고비나(BA)</item>
         <item>보츠와나(BW)</item>
         <item>볼리비아(BO)</item>
         <item>부룬디(BI)</item>
@@ -294,7 +294,7 @@
         <item>코트디부아르(CI)</item>
         <item>콜롬비아(CO)</item>
         <item>콩고 공화국(CG)</item>
-        <item>콩고 민주 공화국(CD)</item>
+        <item>콩고민주공화국(CD)</item>
         <item>쿠바(CU)</item>
         <item>쿠웨이트(KW)</item>
         <item>크로아티아(HR)</item>
@@ -309,7 +309,7 @@
         <item>파나마(PA)</item>
         <item>파라과이(PY)</item>
         <item>파키스탄(PK)</item>
-        <item>파푸아 뉴기니(PG)</item>
+        <item>파푸아뉴기니(PG)</item>
         <item>팔레스타인(PS)</item>
         <item>페루(PE)</item>
         <item>포르투갈(PT)</item>

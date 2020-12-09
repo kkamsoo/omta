@@ -46,8 +46,8 @@ public class MainController extends AppCompatActivity {
     GetNationAPI nationAPI;
     GetProductAPI productAPI;
 
-    private int nationPosition = 0;
-
+    private int nationPosition;
+    private int tabIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +58,7 @@ public class MainController extends AppCompatActivity {
         newsAPI = new GetNewsAPI(context, "");
         successAPI = new GetSuccessAPI(context, "");
         scamAPI = new GetScamAPI(context, "");
-        nationAPI = new GetNationAPI(context, "US");
+        nationAPI = new GetNationAPI(context, "VN");
         productAPI = new GetProductAPI(context, "");
 
         // 백그라운드 실행
@@ -160,21 +160,16 @@ public class MainController extends AppCompatActivity {
 
         // 탭 이벤트 처리
         TabLayout tabLayout = findViewById(R.id.tablayout);
-        int tabIndex = getIntent().getIntExtra("TabIndex", 0); // 탭 인덱스 가져오기
+        tabIndex = getIntent().getIntExtra("TabIndex", 0); // 탭 인덱스 가져오기
         tabLayout.getTabAt(tabIndex).select();
-        // 국가 정보일 경우 englishNations 사용
-        if(tabIndex == 3) {
-            nationAdapter = ArrayAdapter.createFromResource(context, R.array.englishNations, R.layout.spinner_layout);
-        }
-        else {
-            nationAdapter = ArrayAdapter.createFromResource(context, R.array.nations, R.layout.spinner_layout);
-        }
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0) {
                     runOnUiThread(() -> {
                         menuTitle.setText("해외 시장 뉴스"); // 메뉴타이틀 설정
+                        tabIndex = 0;
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");
@@ -187,6 +182,7 @@ public class MainController extends AppCompatActivity {
                 else if(tab.getPosition() == 1) {
                     runOnUiThread(() -> {
                         menuTitle.setText("기업 성공 사례");
+                        tabIndex = 1;
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");
@@ -199,6 +195,7 @@ public class MainController extends AppCompatActivity {
                 else if(tab.getPosition() == 2) {
                     runOnUiThread(() -> {
                         menuTitle.setText("무역 사기 사례");
+                        tabIndex = 2;
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");
@@ -209,9 +206,9 @@ public class MainController extends AppCompatActivity {
                     });
                 }
                 else if(tab.getPosition() == 3) {
-                    nationAdapter = ArrayAdapter.createFromResource(context, R.array.englishNations, R.layout.spinner_layout);
                     runOnUiThread(() -> {
                         menuTitle.setText("국가 정보");
+                        tabIndex = 3;
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");
@@ -224,6 +221,7 @@ public class MainController extends AppCompatActivity {
                 else if(tab.getPosition() == 4) {
                     runOnUiThread(() -> {
                         menuTitle.setText("상품 DB");
+                        tabIndex = 4;
                         // 스피너 초기값 설정
                         nationSpinner.setSelection(0);
                         titleText.setText("");
@@ -245,6 +243,7 @@ public class MainController extends AppCompatActivity {
         });
 
         // 국가 선택 스피너 어댑터
+        nationAdapter = ArrayAdapter.createFromResource(context, R.array.englishNations, R.layout.spinner_layout);
         nationAdapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
         nationSpinner.setAdapter(nationAdapter);
 
@@ -258,7 +257,11 @@ public class MainController extends AppCompatActivity {
                 if(position > 0) {
                     nationPosition = position;
                     String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                    String subString = nation.substring(nation.length()-3, nation.length()-1);
+                    String subString;
+                    // 국가선택 문자열 처리
+                    if(tabIndex == 3) subString = nation.substring(nation.length()-3, nation.length()-1);
+                    else subString = nation.substring(0, nation.length()-4);
+                    
                     getAPI(menuTitle.getText().toString(), subString, "", "", position);
                 }
             }

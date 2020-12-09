@@ -58,33 +58,43 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
             Document doc = conn.get();
-            Elements elements = doc.select("item");
+            Elements elements = doc.select("resultMsg");
+            // 데이터를 받지 못한경우
+            if(elements.text().equals("NODATA_ERROR")) {
+                NewsData newsData = new NewsData("", "", "");
+                newsData.setNewsTitl("API로부터 데이터를 받지 못하였습니다.");
+                newsList.add(newsData);
+            }
 
-            for (Element element : elements) {
-                NewsData newsData = new NewsData("", "", ""); // 뉴스 데이터 하나 생성
-                Elements newsTitle = element.select("newsTitl"); // 뉴스타이틀 데이터 가져오기
-                newsTitle = newsTitle.select("data");
-                newsData.newsTitl = newsTitle.text();
+            else {
+                elements = doc.select("item");
 
-                // 뉴스요약 데이터 가져오기
-                Elements eles2 = element.select("cntntSumar");
-                for (Element ele : eles2) {
-                    Elements subNode = ele.select("data");
-                    newsData.cntntSumar += subNode.text();
+                for (Element element : elements) {
+                    NewsData newsData = new NewsData("", "", ""); // 뉴스 데이터 하나 생성
+                    Elements newsTitle = element.select("newsTitl"); // 뉴스타이틀 데이터 가져오기
+                    newsTitle = newsTitle.select("data");
+                    newsData.newsTitl = newsTitle.text();
+
+                    // 뉴스요약 데이터 가져오기
+                    Elements eles2 = element.select("cntntSumar");
+                    for (Element ele : eles2) {
+                        Elements subNode = ele.select("data");
+                        newsData.cntntSumar += subNode.text();
+                    }
+                    SpannableString spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT));
+                    newsData.cntntSumar = spanText.toString();
+
+                    // 뉴스 본문 데이터 가져오기
+                    Elements eles = element.select("newsBdt");
+                    for (Element ele : eles) {
+                        Elements subNode = ele.select("data");
+                        newsData.newsBdt += subNode.text();
+                    }
+                    newsData.newsBdt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                    spanText = new SpannableString(Html.fromHtml(newsData.newsBdt, Html.FROM_HTML_MODE_COMPACT));
+                    newsData.newsBdt = spanText.toString(); // 삭제하고 남은 스트링데이터
+                    newsList.add(newsData); // 최종 뉴스데이터를 뉴스 리스트에 추가
                 }
-                SpannableString spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT));
-                newsData.cntntSumar = spanText.toString();
-                newsList.add(newsData); // 최종 뉴스데이터를 뉴스 리스트에 추가
-
-                // 뉴스 본문 데이터 가져오기
-                Elements eles = element.select("newsBdt");
-                for (Element ele : eles) {
-                    Elements subNode = ele.select("data");
-                    newsData.newsBdt += subNode.text();
-                }
-                newsData.newsBdt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                spanText = new SpannableString(Html.fromHtml(newsData.newsBdt, Html.FROM_HTML_MODE_COMPACT));
-                newsData.newsBdt = spanText.toString(); // 삭제하고 남은 스트링데이터
             }
         } catch (Throwable e) {
             e.printStackTrace();
