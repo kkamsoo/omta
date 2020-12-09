@@ -72,7 +72,7 @@ public class GetNationAPI extends AsyncTask<Integer, Void, String> {
                 for (int i = 1; i < eles.size(); i++) {
                     nationData.content += eles.get(i).text() + "<br /><br />"; // 줄바꿈
                 }
-                nationData.content += "<br /><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                nationData.content += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                 SpannableString spanText = new SpannableString(Html.fromHtml(nationData.content, Html.FROM_HTML_MODE_COMPACT));
                 nationData.content = spanText.toString();
                 nationList.add(nationData);

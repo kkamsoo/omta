@@ -55,11 +55,11 @@ public class MainController extends AppCompatActivity {
         this.context = this;
 
         // 비동기 통신 생성자
-        newsAPI = new GetNewsAPI(context, "미국");
-        successAPI = new GetSuccessAPI(context, "미국");
-        scamAPI = new GetScamAPI(context, "미국");
-        nationAPI = new GetNationAPI(context, "VN");
-        productAPI = new GetProductAPI(context, "미국");
+        newsAPI = new GetNewsAPI(context, "");
+        successAPI = new GetSuccessAPI(context, "");
+        scamAPI = new GetScamAPI(context, "");
+        nationAPI = new GetNationAPI(context, "US");
+        productAPI = new GetProductAPI(context, "");
 
         // 백그라운드 실행
         newsAPI.execute();
@@ -181,6 +181,7 @@ public class MainController extends AppCompatActivity {
                         dateText.setText("");
                         listAdapter.data = newsAPI.newsList;
                         listAdapter.notifyDataSetChanged();
+                        listView.smoothScrollToPosition(0);
                     });
                 }
                 else if(tab.getPosition() == 1) {
@@ -192,6 +193,7 @@ public class MainController extends AppCompatActivity {
                         dateText.setText("");
                         listAdapter.data = successAPI.successList;
                         listAdapter.notifyDataSetChanged();
+                        listView.smoothScrollToPosition(0);
                     });
                 }
                 else if(tab.getPosition() == 2) {
@@ -203,6 +205,7 @@ public class MainController extends AppCompatActivity {
                         dateText.setText("");
                         listAdapter.data = scamAPI.scamList;
                         listAdapter.notifyDataSetChanged();
+                        listView.smoothScrollToPosition(0);
                     });
                 }
                 else if(tab.getPosition() == 3) {
@@ -215,6 +218,7 @@ public class MainController extends AppCompatActivity {
                         dateText.setText("");
                         listAdapter.data = nationAPI.nationList;
                         listAdapter.notifyDataSetChanged();
+                        listView.smoothScrollToPosition(0);
                     });
                 }
                 else if(tab.getPosition() == 4) {
@@ -226,6 +230,7 @@ public class MainController extends AppCompatActivity {
                         dateText.setText("");
                         listAdapter.data = productAPI.productList;
                         listAdapter.notifyDataSetChanged();
+                        listView.smoothScrollToPosition(0);
                     });
                 }
             }

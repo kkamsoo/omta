@@ -70,7 +70,7 @@ public class GetProductAPI extends AsyncTask<Integer, Void, String> {
                     Elements subNode = ele.select("data");
                     productData.bdtCntnt += subNode.text();
                 }
-                productData.bdtCntnt += "<br /><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                productData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                 SpannableString spanText = new SpannableString(Html.fromHtml(productData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
                 productData.bdtCntnt = spanText.toString();
                 productList.add(productData);

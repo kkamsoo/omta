@@ -53,7 +53,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
     protected String doInBackground(Integer... integers) {
         String key = "W%2BPdBC2wddBhjfEMD4iaIw2V64C9eF40jJZU2Z8R669h9As3wQy3r7LLv0GCV%2FSxq4P7LM4P9T4y0kR%2FM8M8iA%3D%3D";
         String queryUrl = "http://apis.data.go.kr/B410001/ovseaMrktNewsService/ovseaMrktNews?ServiceKey="
-                + key + "&type=xml&numOfRows=5&search1=" + nation + "&search2=" + title + "&search4=" + date;
+                + key + "&type=xml&numOfRows=10&search1=" + nation + "&search2=" + title + "&search4=" + date;
 
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
@@ -82,7 +82,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
                     Elements subNode = ele.select("data");
                     newsData.newsBdt += subNode.text();
                 }
-                newsData.newsBdt += "<br /><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
+                newsData.newsBdt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                 spanText = new SpannableString(Html.fromHtml(newsData.newsBdt, Html.FROM_HTML_MODE_COMPACT));
                 newsData.newsBdt = spanText.toString(); // 삭제하고 남은 스트링데이터
             }
