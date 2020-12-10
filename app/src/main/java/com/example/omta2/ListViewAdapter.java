@@ -16,7 +16,7 @@ public class ListViewAdapter<T> extends BaseAdapter {
     LayoutInflater layoutInflater;
     ArrayList<T> data;
 
-    public ListViewAdapter(Context context, ArrayList data) {
+    public ListViewAdapter(Context context, ArrayList<T> data) {
         this.context = context;
         this.data = data;
         this.layoutInflater = LayoutInflater.from(context);
@@ -41,8 +41,8 @@ public class ListViewAdapter<T> extends BaseAdapter {
     public View getView(int position, View converView, ViewGroup parent) {
         View view = layoutInflater.inflate(R.layout.listview_layout, null);
 
-        TextView objectTitle = (TextView)view.findViewById(R.id.objectTitle);
-        TextView objectSummary = (TextView)view.findViewById(R.id.objectSummary);
+        TextView objectTitle = view.findViewById(R.id.objectTitle);
+        TextView objectSummary = view.findViewById(R.id.objectSummary);
 
         if(data.get(0).getClass().getSimpleName().equals("NewsData")) {
             ArrayList<NewsData> newsData = (ArrayList<NewsData>) data;

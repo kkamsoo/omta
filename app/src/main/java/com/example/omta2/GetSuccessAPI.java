@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
     ArrayList<SuccessData> successList = new ArrayList<>();
     Context context;
-    ProgressDialog progDailog;
+    ProgressDialog progDialog;
     ListViewAdapter listAdapter;
 
     String nation = "";
@@ -41,10 +41,10 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progDailog = new ProgressDialog(context);
-        progDailog.setMessage("API로부터 데이터를 받는 중입니다..");
-        progDailog.setCancelable(false);
-        progDailog.show();
+        progDialog = new ProgressDialog(context);
+        progDialog.setMessage("API로부터 데이터를 받는 중입니다..");
+        progDialog.setCancelable(false);
+        progDialog.show();
     }
 
     @Override
@@ -95,6 +95,6 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
             listAdapter.data = successList;
             listAdapter.notifyDataSetChanged();
         }
-        progDailog.cancel();
+        progDialog.cancel();
     }
 }

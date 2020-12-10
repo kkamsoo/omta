@@ -18,12 +18,12 @@ public class SelectMenuController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.selectmenu_layout);
 
-        Button newsButton = (Button) findViewById(R.id.overseasNews);
-        Button successButton = (Button) findViewById(R.id.successStory);
-        Button nationButton = (Button) findViewById(R.id.nationInformation);
-        Button scamButton = (Button) findViewById(R.id.scamStory);
-        Button productButton = (Button) findViewById(R.id.productDB);
-        Button exitButton = (Button) findViewById(R.id.exit);
+        Button newsButton = findViewById(R.id.overseasNews);
+        Button successButton = findViewById(R.id.successStory);
+        Button nationButton = findViewById(R.id.nationInformation);
+        Button scamButton = findViewById(R.id.scamStory);
+        Button productButton = findViewById(R.id.productDB);
+        Button exitButton = findViewById(R.id.exit);
 
         newsButton.setOnClickListener(view -> {
             Intent intent = new Intent(getApplicationContext(), MainController.class);

@@ -58,6 +58,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
         try {
             Connection conn = Jsoup.connect(queryUrl); // Jsoup을 사용해서 웹페이지를 가져온다
             Document doc = conn.get();
+
             Elements elements = doc.select("resultMsg");
             // 데이터를 받지 못한경우
             if(elements.text().equals("NODATA_ERROR")) {

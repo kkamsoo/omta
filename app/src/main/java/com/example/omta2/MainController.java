@@ -29,12 +29,6 @@ public class MainController extends AppCompatActivity {
     Spinner nationSpinner;
     Button backButton;
 
-    ArrayList<NewsData> newsDataList;
-    ArrayList<SuccessData> successDataList;
-    ArrayList<NationData> nationDataList;
-    ArrayList<ScamData> scamDataList;
-    ArrayList<ProductData> productDataList;
-
     ListView listView;
     ListViewAdapter listAdapter;
     ArrayAdapter nationAdapter;
@@ -69,11 +63,11 @@ public class MainController extends AppCompatActivity {
         productAPI.execute();
 
         // 상단 타이틀 텍스트 설정
-        TextView menuTitle = (TextView) findViewById(R.id.menutitle);
+        TextView menuTitle = findViewById(R.id.menutitle);
         menuTitle.setText(getIntent().getStringExtra("menuTitle"));
 
         // 리스트뷰 생성
-        listView = (ListView) findViewById(R.id.listView);
+        listView = findViewById(R.id.listView);
 
         // 초기값 설정
         if(menuTitle.getText().equals("해외 시장 뉴스")) {
@@ -114,48 +108,50 @@ public class MainController extends AppCompatActivity {
         nationSpinner = findViewById(R.id.nationspinner);
 
         // 제목, 날짜입력 텍스트 이벤트 처리
-        EditText titleText = (EditText)findViewById(R.id.titletext);
-        EditText dateText = (EditText)findViewById(R.id.datetext);
+        EditText titleText = findViewById(R.id.titletext);
+        EditText dateText = findViewById(R.id.datetext);
 
-        titleText.setOnEditorActionListener(new TextView.OnEditorActionListener()  {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                // 국가가 선택되지 않았으면 토스트메시지 출력
-                if (nationPosition == 0) {
-                    Toast.makeText(context, "국가를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                    textView.clearFocus();
-                    textView.setFocusable(false);
-                    textView.setFocusableInTouchMode(true);
-                    textView.setFocusable(true);
-
-                    return true;
-                }
-
-                String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                getAPI(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+        titleText.setOnEditorActionListener((textView, i, keyEvent) -> {
+            // 국가가 선택되지 않았으면 토스트메시지 출력
+            if (nationPosition == 0) {
+                Toast.makeText(context, "국가를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                textView.clearFocus();
+                textView.setFocusable(false);
+                textView.setFocusableInTouchMode(true);
+                textView.setFocusable(true);
 
                 return true;
             }
+
+            String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
+            String subString;
+            // 국가선택 문자열 처리
+            if(tabIndex == 3) subString = nation.substring(nation.length()-3, nation.length()-1);
+            else subString = nation.substring(0, nation.length()-4);
+            getAPI(menuTitle.getText().toString(), subString, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+
+            return true;
         });
 
-        dateText.setOnEditorActionListener(new TextView.OnEditorActionListener()  {
-            @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                // 국가가 선택되지 않았으면 토스트메시지 출력
-                if (nationPosition == 0) {
-                    Toast.makeText(context, "국가를 선택해주세요.", Toast.LENGTH_SHORT).show();
-                    textView.clearFocus();
-                    textView.setFocusable(false);
-                    textView.setFocusableInTouchMode(true);
-                    textView.setFocusable(true);
-
-                    return true;
-                }
-                String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
-                getAPI(menuTitle.getText().toString(), nation, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+        dateText.setOnEditorActionListener((textView, i, keyEvent) -> {
+            // 국가가 선택되지 않았으면 토스트메시지 출력
+            if (nationPosition == 0) {
+                Toast.makeText(context, "국가를 선택해주세요.", Toast.LENGTH_SHORT).show();
+                textView.clearFocus();
+                textView.setFocusable(false);
+                textView.setFocusableInTouchMode(true);
+                textView.setFocusable(true);
 
                 return true;
             }
+            String nation = nationSpinner.getItemAtPosition(nationPosition).toString();
+            String subString;
+            // 국가선택 문자열 처리
+            if(tabIndex == 3) subString = nation.substring(nation.length()-3, nation.length()-1);
+            else subString = nation.substring(0, nation.length()-4);
+            getAPI(menuTitle.getText().toString(), subString, titleText.getText().toString(), dateText.getText().toString(), nationPosition);
+
+            return true;
         });
 
         // 탭 이벤트 처리
@@ -271,37 +267,34 @@ public class MainController extends AppCompatActivity {
             }
         });
         // 리스트뷰에 있는 데이터 클릭시 이벤트 처리
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getApplicationContext(), ListDetailController.class);
-                Object item = listView.getAdapter().getItem(i);
+        listView.setOnItemClickListener((adapterView, view, i, l) -> {
+            Intent intent = new Intent(getApplicationContext(), ListDetailController.class);
+            Object item = listView.getAdapter().getItem(i);
 
-                if(menuTitle.getText().equals("해외 시장 뉴스")) {
-                    NewsData data = (NewsData) item;
-                    intent.putExtra("item",  data);
-                }
-                else if(menuTitle.getText().equals("기업 성공 사례")) {
-                    SuccessData data = (SuccessData) item;
-                    intent.putExtra("item",  data);
-                }
-
-                else if(menuTitle.getText().equals("국가 정보")) {
-                    NationData data = (NationData) item;
-                    intent.putExtra("item",  data);
-                }
-                else if(menuTitle.getText().equals("무역 사기 사례")) {
-                    ScamData data = (ScamData) item;
-                    intent.putExtra("item",  data);
-                }
-                else if(menuTitle.getText().equals("상품 DB")) {
-                    ProductData data = (ProductData) item;
-                    intent.putExtra("item",  data);
-                }
-                intent.putExtra("category", menuTitle.getText());
-
-                startActivity(intent);
+            if(menuTitle.getText().equals("해외 시장 뉴스")) {
+                NewsData data = (NewsData) item;
+                intent.putExtra("item",  data);
             }
+            else if(menuTitle.getText().equals("기업 성공 사례")) {
+                SuccessData data = (SuccessData) item;
+                intent.putExtra("item",  data);
+            }
+
+            else if(menuTitle.getText().equals("국가 정보")) {
+                NationData data = (NationData) item;
+                intent.putExtra("item",  data);
+            }
+            else if(menuTitle.getText().equals("무역 사기 사례")) {
+                ScamData data = (ScamData) item;
+                intent.putExtra("item",  data);
+            }
+            else if(menuTitle.getText().equals("상품 DB")) {
+                ProductData data = (ProductData) item;
+                intent.putExtra("item",  data);
+            }
+            intent.putExtra("category", menuTitle.getText());
+
+            startActivity(intent);
         });
     }
     // API 호출 메소드
