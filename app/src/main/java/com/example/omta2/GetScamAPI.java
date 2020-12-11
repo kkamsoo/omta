@@ -76,9 +76,7 @@ public class GetScamAPI extends AsyncTask<Integer, Void, String> {
                         Elements subNode = ele.select("data");
                         scamData.bdtCntnt += subNode.text();
                     }
-                    scamData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                    SpannableString spanText = new SpannableString(Html.fromHtml(scamData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
-                    scamData.bdtCntnt = spanText.toString();
+                    scamData.bdtCntnt += "<br /><p style=\"text-align: center;\"> 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 <br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                     scamList.add(scamData);
                 }
             }

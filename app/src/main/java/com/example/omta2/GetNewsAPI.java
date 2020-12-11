@@ -82,8 +82,6 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
                         Elements subNode = ele.select("data");
                         newsData.cntntSumar += subNode.text();
                     }
-                    SpannableString spanText = new SpannableString(Html.fromHtml(newsData.cntntSumar, Html.FROM_HTML_MODE_COMPACT));
-                    newsData.cntntSumar = spanText.toString();
 
                     // 뉴스 본문 데이터 가져오기
                     Elements eles = element.select("newsBdt");
@@ -91,9 +89,7 @@ public class GetNewsAPI extends AsyncTask<Integer, Void, String> {
                         Elements subNode = ele.select("data");
                         newsData.newsBdt += subNode.text();
                     }
-                    newsData.newsBdt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                    spanText = new SpannableString(Html.fromHtml(newsData.newsBdt, Html.FROM_HTML_MODE_COMPACT));
-                    newsData.newsBdt = spanText.toString(); // 삭제하고 남은 스트링데이터
+                    newsData.newsBdt += "<br /><p style=\"text-align: center;\"> 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 <br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                     newsList.add(newsData); // 최종 뉴스데이터를 뉴스 리스트에 추가
                 }
             }

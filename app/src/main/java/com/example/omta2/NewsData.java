@@ -23,6 +23,12 @@ public class NewsData implements Serializable {
         this.cntntSumar = cntntSumar;
     }
 
+    public SpannableString getSpanSumar() { return spanSumar; }
+
+    public void setSpanSumar(SpannableString spanSumar) { this.spanSumar = spanSumar; }
+
+    public SpannableString spanSumar;
+
     public String getNewsTitl() {
         return newsTitl;
     }

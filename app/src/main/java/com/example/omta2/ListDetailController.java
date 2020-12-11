@@ -1,6 +1,8 @@
 package com.example.omta2;
 
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,6 +55,8 @@ public class ListDetailController extends AppCompatActivity {
             content = data.getBdtCntnt();
         }
         detailTitle.setText(title);
-        detailContent.setText(content);
+        // HTML문서 전체 태그를 가져와서 CSS나 이미지소스까지 전부 파싱
+        Spanned spanned = Html.fromHtml(content, new MyImageGetter(detailContent, this), null);
+        detailContent.setText(spanned);
     }
 }

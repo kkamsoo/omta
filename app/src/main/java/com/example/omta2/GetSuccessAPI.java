@@ -76,9 +76,7 @@ public class GetSuccessAPI extends AsyncTask<Integer, Void, String> {
                         Elements subNode = ele.select("data");
                         successData.bdtCntnt += subNode.text();
                     }
-                    successData.bdtCntnt += "<br />< 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 ><br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
-                    SpannableString spanText = new SpannableString(Html.fromHtml(successData.bdtCntnt, Html.FROM_HTML_MODE_COMPACT));
-                    successData.bdtCntnt = spanText.toString();
+                    successData.bdtCntnt += "<br /><p style=\"text-align: center;\"> 저작권자 ⓒ KOTRA ＆ KOTRA 해외시장뉴스 <br /><br />"; // 줄바꿈으로 스크롤 아래데이터 출력
                     successList.add(successData);
                 }
             }
